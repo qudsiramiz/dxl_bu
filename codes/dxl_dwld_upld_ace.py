@@ -13,6 +13,7 @@ from matplotlib.dates import DateFormatter
 
 s = sched.scheduler(time.time, time.sleep)
 
+
 def plot_figures_ace(sc):
 #for xxx in range(1):
     """
@@ -92,7 +93,7 @@ def plot_figures_ace(sc):
     # propagation time
     indx_min = min(range(len(df_ace.index)),
         key=lambda i: abs(df_ace.index[i] - df_ace.index[-1] + datetime.timedelta(minutes=35)))
-    
+
     # Set a new series corresponding to the index for the closest value of solar wind
     df_param = df_ace.iloc[indx_min]
 
@@ -106,7 +107,7 @@ def plot_figures_ace(sc):
     time_dipole = (df_ace.index[indx_min] - t_unix).total_seconds()
     ps = gp.recalc(time_dipole)
 
-    # Compute the dipole tilt angle correction, indegrees,  to be applied to the cusp locations
+    # Compute the dipole tilt angle correction, indegrees, to be applied to the cusp locations
     # NOTE: The correctionvalue computed  here is based on the values given in Newell et al. (2006),
     # doi:10.1029/2006JA011731, 2006
     dipole_correction = - 0.046 * ps * 180 / np.pi
@@ -292,20 +293,21 @@ def plot_figures_ace(sc):
     date_form = DateFormatter('%H:%M')
     axs5.xaxis.set_major_formatter(date_form)
 
-    figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
+    fig_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
 
-    axs3.text(-0.1, 0.5, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
+    axs3.text(-0.1, 0.5, f'Figure plotted on {fig_time[0:10]} at {fig_time[11:]} UTC',
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
     fig_name = f"../figures/sw_ace_parameters_2hr.png"
 
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.close()
-    print(f"Figure saved at (UTC):" +
+    print("Figure saved at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
+
 
 s.enter(0, 1, plot_figures_ace, (s,))
 s.run()
