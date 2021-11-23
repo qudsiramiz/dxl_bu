@@ -191,6 +191,7 @@ def line_trace(sd):
         ax.plot(xx1,zz1)
         ax.plot(xx2,zz2)
 
+
     figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
 
     ax.text(0.01, 0.01, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
