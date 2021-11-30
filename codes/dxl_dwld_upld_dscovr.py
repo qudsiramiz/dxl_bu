@@ -13,8 +13,9 @@ from matplotlib.dates import DateFormatter
 
 s = sched.scheduler(time.time, time.sleep)
 
+
 def plot_figures_dsco(sc):
-#for foo in range(1):
+# for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
@@ -90,7 +91,7 @@ def plot_figures_dsco(sc):
     # propagation time
     indx_min = min(range(len(df_dsco.index)),
         key=lambda i: abs(df_dsco.index[i] - df_dsco.index[-1] + datetime.timedelta(minutes=35)))
-    
+
     # Set a new series corresponding to the index for the closest value of solar wind
     df_param = df_dsco.iloc[indx_min]
 
@@ -284,16 +285,17 @@ def plot_figures_dsco(sc):
     axs3.text(-0.1, 0.5, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
-    fig_name = f"../figures/sw_dsco_parameters_2hr.png"
+    fig_name = "../figures/sw_dsco_parameters_2hr.png"
 
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.tight_layout()
     plt.close()
-    print(f"Figure saved at (UTC):" +
-        f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
+    print("Figure saved at (UTC):" +
+          f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
+
 
 s.enter(0, 1, plot_figures_dsco, (s,))
 s.run()
