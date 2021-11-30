@@ -15,7 +15,6 @@ s = sched.scheduler(time.time, time.sleep)
 
 
 def plot_figures_ace(sc):
-#for xxx in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
