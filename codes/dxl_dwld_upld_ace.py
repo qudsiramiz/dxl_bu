@@ -3,9 +3,6 @@ import sched
 import time
 
 import geopack.geopack as gp
-# import pylab as pl
-# import matplotlib as mpl
-# from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -292,9 +289,9 @@ def plot_figures_ace(sc):
     date_form = DateFormatter('%H:%M')
     axs5.xaxis.set_major_formatter(date_form)
 
-    fig_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
+    figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
 
-    axs3.text(-0.1, 0.5, f'Figure plotted on {fig_time[0:10]} at {fig_time[11:]} UTC',
+    axs3.text(-0.1, 0.5, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
     fig_name = f"../figures/sw_ace_parameters_2hr.png"
@@ -306,7 +303,6 @@ def plot_figures_ace(sc):
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
-
 
 s.enter(0, 1, plot_figures_ace, (s,))
 s.run()

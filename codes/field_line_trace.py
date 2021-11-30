@@ -2,6 +2,7 @@ import datetime
 import itertools
 import multiprocessing as mp
 import sched
+import sys
 import time
 
 import geopack.geopack as gp
@@ -20,24 +21,21 @@ today_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
 s = sched.scheduler(time.time, time.sleep)
 
-
-def dual_half_circle(center=(0, 0), radius=1, angle=90, ax=None, colors=('w', 'k', 'k'), **kwargs):
+def dual_half_circle(center=(0,0), radius=1, angle=90, ax=None, colors=('w','k','k'),
+                     **kwargs):
     """
-    Add two half circles to the axes *ax* (or the current axes) with the specified facecolors
-    *colors* rotated at *angle* (in degrees).
-
-    NOTE: This part of the code was copied from the following link:
-    https://github.com/tsssss/geopack/blob/master/notebooks/Field%20Line%20Trace%20Demo.ipynb
+    Add two half circles to the axes *ax* (or the current axes) with the 
+    specified facecolors *colors* rotated at *angle* (in degrees).
     """
     if ax is None:
         ax = plt.gca()
     theta1, theta2 = angle, angle + 180
-    # w1 = Wedge(center, radius, theta1, theta2, fc=colors[0], **kwargs)
-    # w2 = Wedge(center, radius, theta2, theta1, fc=colors[1], **kwargs)
-
+    #w1 = Wedge(center, radius, theta1, theta2, fc=colors[0], **kwargs)
+    #w2 = Wedge(center, radius, theta2, theta1, fc=colors[1], **kwargs)
+    
     w1 = Wedge(center, radius, theta1, theta2, fc=colors[1], **kwargs)
     w2 = Wedge(center, radius, theta2, theta1, fc=colors[0], **kwargs)
-
+   
     cr = Circle(center, radius, fc=colors[2], fill=False, **kwargs)
     for wedge in [w1, w2, cr]:
         ax.add_artist(wedge)
@@ -59,6 +57,7 @@ def setup_fig(xlim=(15, -30), ylim=(-15, 15), xlabel='X GSM [Re]', ylabel='Z GSM
     ax.set_ylim(ylim)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
+    
     ax.set_aspect('equal')
     _, _, _ = dual_half_circle(ax=ax)
 
@@ -163,61 +162,67 @@ def trace_lines(*args):
 
 
 def line_trace(sd):
-# for xxx in range(1):
     """
     Create a line trace of the field lines using real time data.
     """
-
-    # Set up the time to run the job
-    s.enter(1000, 1, line_trace, (sd,))
-
-    # start = time.time()
-    print("Code execution started at (UTC):" +
-          f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
-
-    theta_arr = np.linspace(0, 2 * np.pi, 60)
-    phi_arr = np.array([0])  # np.linspace(-11 * np.pi/180, 11*np.pi/180, 2)
-
     try:
-        plt.close("all")
+        # Set up the time to run the job
+        s.enter(1000, 1, line_trace, (sd,))
+
+        start = time.time()
+        print(f"Code execution started at (UTC):" +
+              f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
+
+        theta_arr = np.linspace(0, 2 * np.pi, 60)
+        phi_arr = np.array([0])  # np.linspace(-11 * np.pi/180, 11*np.pi/180, 2)
+
+        try:
+            plt.close("all")
+        except:
+            pass
+
+        p = mp.Pool(30)
+        input = ((i, j) for i,j in itertools.product(theta_arr, phi_arr))
+        res = p.map(trace_lines, input)
+        p.close()
+        p.join()
+
+        ax=setup_fig()
+        for r in res:
+            xx1 = r[0]
+            yy1 = r[1]
+            zz1 = r[2]
+            xx2 = r[3]
+            yy2 = r[4]
+            zz2 = r[5]
+            ps = r[6]
+            ax.plot(xx1,zz1)
+            ax.plot(xx2,zz2)
+
+        figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
+
+        ax.text(0.01, 0.01, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
+                ha='left', va='bottom', transform=ax.transAxes, fontsize=12)
+        ax.text(0.99, 0.99, f'Real-time T-96 model', ha='right', va='top', transform=ax.transAxes, 
+                fontsize=12)
+        ax.text(0.01, 0.99, f'Dipole Tilt: {np.round(np.rad2deg(ps), 2)}$^\circ$', 
+                ha='left', va='top', transform=ax.transAxes,
+                fontsize=12)
+        fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/Earths_magnetic_field.png"
+
+        plt.tight_layout()
+        plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+
+        print(f"Code execution finished at (UTC):" +
+              f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        print(f"Figure saved at (UTC):{figure_time}\n")
+        print(f"Waiting for about 15 minutes before running the code again.\n")
     except:
-        pass
-
-    p = mp.Pool(30)
-    input = ((i, j) for i,j in itertools.product(theta_arr, phi_arr))
-    res = p.map(trace_lines, input)
-    p.close()
-    p.join()
-
-    # Set up the figure
-    ax = setup_fig()
-    for r in res:
-        xx1 = r[0]
-        zz1 = r[2]
-        xx2 = r[3]
-        zz2 = r[5]
-        ps = r[6]
-        ax.plot(xx1, zz1)
-        ax.plot(xx2, zz2)
-
-    fig_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
-
-    ax.text(0.01, 0.01, f'Figure plotted on {fig_time[0:10]} at {fig_time[11:]} UTC',
-            ha='left', va='bottom', transform=ax.transAxes, fontsize=12)
-    ax.text(0.99, 0.99, 'Real-time T-96 model', ha='right', va='top', transform=ax.transAxes,
-            fontsize=12)
-    ax.text(0.01, 0.99, f'Dipole Tilt: {np.round(np.rad2deg(ps), 2)}$^\circ$', ha='left', va='top',
-            transform=ax.transAxes, fontsize=12)
-    fig_name = "../figures/Earths_magnetic_field.png"
-
-    plt.tight_layout()
-    plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
-
-    print("Code execution finished at (UTC):" +
-          f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
-    print(f"Figure saved at (UTC):{fig_time}\n")
-    print("Waiting for a preset amount of time before running the code again.\n")
-
+        print("Error:", sys.exc_info()[0])
+        print(f"Code execution finished at (UTC):" +
+              f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        print(f"Waiting for about 15 minutes before running the code again.\n")
+        s.enter(1000, 1, line_trace, (sd,))
 
 s.enter(0, 1, line_trace, (s,))
 s.run()

@@ -3,9 +3,6 @@ import sched
 import time
 
 import geopack.geopack as gp
-# import pylab as pl
-# import matplotlib as mpl
-# from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -15,7 +12,6 @@ s = sched.scheduler(time.time, time.sleep)
 
 
 def plot_figures_dsco(sc):
-# for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
@@ -291,11 +287,10 @@ def plot_figures_dsco(sc):
     plt.tight_layout()
     plt.close()
     print("Figure saved at (UTC):" +
-          f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
-
 
 s.enter(0, 1, plot_figures_dsco, (s,))
 s.run()
