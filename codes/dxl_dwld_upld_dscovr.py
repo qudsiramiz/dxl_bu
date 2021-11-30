@@ -286,7 +286,6 @@ def plot_figures_dsco(sc):
 
     fig_name = f"../figures/sw_dsco_parameters_2hr.png"
 
-
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.tight_layout()
     plt.close()
