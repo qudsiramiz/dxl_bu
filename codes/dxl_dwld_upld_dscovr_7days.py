@@ -11,16 +11,16 @@ from matplotlib.dates import DateFormatter
 s = sched.scheduler(time.time, time.sleep)
 
 
-def plot_figures_dsco(sc):
-#for foo in range(1):
+def plot_figures_dsco_7days(sc):
+# for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
     # Set up the time to run the job
-    #s.enter(60, 1, plot_figures_dsco, (sc,))
+    s.enter(60, 1, plot_figures_dsco_7days, (sc,))
 
     # start = time.time()
-    print(f"Code execution for DSCOVR started at (UTC):" +
+    print(f"Code execution started at at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Set the font style to Times New Roman
@@ -29,8 +29,8 @@ def plot_figures_dsco(sc):
     plt.rc('text', usetex=True)
 
     # URL of dscovr files
-    dscovr_url_mag = "https://services.swpc.noaa.gov/products/solar-wind/mag-2-hour.json"
-    dscovr_url_plas = "https://services.swpc.noaa.gov/products/solar-wind/plasma-2-hour.json"
+    dscovr_url_mag = "https://services.swpc.noaa.gov/products/solar-wind/mag-7-day.json"
+    dscovr_url_plas = "https://services.swpc.noaa.gov/products/solar-wind/plasma-7-day.json"
     dscovr_url_eph = "https://services.swpc.noaa.gov/products/solar-wind/ephemerides.json"
 
     dscovr_key_list_mag = ["time_tag", "bx_gsm", "by_gsm", "bz_gsm", "lon_gsm", "lat_gsm", "bt"]
@@ -117,6 +117,11 @@ def plot_figures_dsco(sc):
     df_dsco['lambda_ekl'] = - 1.90e-3 * df_dsco.vp * df_dsco.bt\
                             * np.sin(df_dsco.theta_c/2.)**2 + 78.9 + dipole_correction
 
+    # Make a copy of the dataframe at original cadence
+    df_dsco_hc = df_dsco.copy()
+
+    # Compute 1 hour rolling average for each of the parameters and save it to the dataframe
+    df_dsco = df_dsco.rolling("1H", center=True).median()
     # Define the plot parameters
     # cmap = plt.cm.viridis
     # pad = 0.02
@@ -139,6 +144,7 @@ def plot_figures_dsco(sc):
     ms = 2
     lw = 2
     ncols = 2
+    alpha = 0.3
 
     try:
         plt.close('all')
@@ -169,11 +175,12 @@ def plot_figures_dsco(sc):
     axs1.set_ylabel(r'B [nT]', fontsize=20 )
     lgnd1 = axs1.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd1.legendHandles[0]._sizes = [labelsize]
-    fig.suptitle(f'2 Hours DSCOVR Real Time Data', fontsize=22)
+    fig.suptitle(f'7 Days DSCOVR Real Time Data', fontsize=22)
 
     # Density plot
     axs2 = fig.add_subplot(gs[1, 0], sharex=axs1)
     axs2.plot(df_dsco.index, df_dsco.np, 'r-', lw=lw, ms=ms, label=r'$n_p$')
+    axs2.plot(df_dsco_hc.index, df_dsco_hc.np, color='r', lw=1, alpha=alpha)
     axs2.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.np.isnull().all():
@@ -187,6 +194,7 @@ def plot_figures_dsco(sc):
     # Speed plot
     axs3 = fig.add_subplot(gs[2, 0], sharex=axs1)
     axs3.plot(df_dsco.index, df_dsco.vp, 'b-', lw=lw, ms=ms, label=r'$V_p$')
+    axs3.plot(df_dsco_hc.index, df_dsco_hc.vp, color='b', lw=1, alpha=alpha)
     axs3.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.vp.isnull().all():
@@ -200,6 +208,7 @@ def plot_figures_dsco(sc):
     # Flux plot
     axs4 = fig.add_subplot(gs[3, 0], sharex=axs1)
     axs4.plot(df_dsco.index, df_dsco.flux, 'g-', lw=lw, ms=ms, label=r'flux')
+    axs4.plot(df_dsco_hc.index, df_dsco_hc.flux, color='g', lw=1, alpha=alpha)
     im4a = axs4.axhline(y=2.9, xmin=0, xmax=1, color='r', ls='-', lw=lw, ms=ms, label=r'cut-off')
     axs4.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
@@ -274,7 +283,7 @@ def plot_figures_dsco(sc):
                      width=tickwidth, length=ticklength, labelsize=ticklabelsize, labelrotation=0)
     axs5.yaxis.set_label_position("left")
 
-    date_form = DateFormatter('%H:%M')
+    date_form = DateFormatter("%d-%m")
     axs5.xaxis.set_major_formatter(date_form)
 
     figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
@@ -282,18 +291,20 @@ def plot_figures_dsco(sc):
     axs3.text(-0.1, 0.5, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
-    fig_name_git = "../figures/sw_dsco_parameters_2hr.png"
-    fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_dsco_parameters_2hr.png"
-
+    fig_name_git = "../figures/sw_dsco_parameters_7days.png"
     plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+    #plt.tight_layout()
+
+    fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_dsco_parameters_7days.png"
+
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     #plt.tight_layout()
     #plt.close()
-    print("Figure saved for DSCOVR at (UTC):" +
+    print("Figure saved at (UTC):" +
         f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
 
-#s.enter(0, 1, plot_figures_dsco, (s,))
-#s.run()
+s.enter(0, 1, plot_figures_dsco_7days, (s,))
+s.run()

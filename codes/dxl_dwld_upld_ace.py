@@ -17,10 +17,10 @@ def plot_figures_ace(sc):
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
     # Set up the time to run the job
-    s.enter(60, 1, plot_figures_ace, (sc,))
+    #s.enter(60, 1, plot_figures_ace, (sc,))
 
     start = time.time()
-    print(f"Code execution started at (UTC):" +
+    print(f"Code execution for ACE started at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Set the font style to Times New Roman
@@ -216,7 +216,7 @@ def plot_figures_ace(sc):
                       np.nanmax([1.1*np.nanmax(df_ace.flux), 3.3]))
     lgnd4 = axs4.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd4.legendHandles[0]._sizes = [labelsize]
-    axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, m^2)}]$', fontsize=ylabelsize)
+    axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, cm^2)}]$', fontsize=ylabelsize)
 
     # Cusp latitude plot
     axs5 = fig.add_subplot(gs[4:, 0], sharex=axs1)
@@ -295,16 +295,17 @@ def plot_figures_ace(sc):
     axs3.text(-0.1, 0.5, f'Figure plotted on {figure_time[0:10]} at {figure_time[11:]} UTC',
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
-    fig_name = f"../figures/sw_ace_parameters_2hr.png"
+    fig_name_git = f"../figures/sw_ace_parameters_2hr.png"
     fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_ace_parameters_2hr.png"
 
+    plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
-    plt.close()
-    print("Figure saved at (UTC):" +
+    #plt.close()
+    print("Figure saved for ACE at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
 
-s.enter(0, 1, plot_figures_ace, (s,))
-s.run()
+#s.enter(0, 1, plot_figures_ace, (s,))
+#s.run()
