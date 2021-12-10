@@ -162,6 +162,7 @@ def trace_lines(*args):
 
 
 def line_trace(sd):
+#for xxx in range(1):    
     """
     Create a line trace of the field lines using real time data.
     """

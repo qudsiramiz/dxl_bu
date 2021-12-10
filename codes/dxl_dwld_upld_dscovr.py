@@ -12,6 +12,7 @@ s = sched.scheduler(time.time, time.sleep)
 
 
 def plot_figures_dsco(sc):
+# for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
@@ -282,6 +283,7 @@ def plot_figures_dsco(sc):
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
     fig_name = "../figures/sw_dsco_parameters_2hr.png"
+    fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_dsco_parameters_2hr.png"
 
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.tight_layout()
