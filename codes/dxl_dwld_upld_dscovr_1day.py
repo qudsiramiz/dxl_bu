@@ -11,16 +11,16 @@ from matplotlib.dates import DateFormatter
 s = sched.scheduler(time.time, time.sleep)
 
 
-def plot_figures_dsco_1day(sc):
+def plot_figures_dsco_1day():
 #for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
     # Set up the time to run the job
-    s.enter(60, 1, plot_figures_dsco_1day, (sc,))
+    #s.enter(60, 1, plot_figures_dsco_1day, (sc,))
 
     # start = time.time()
-    print(f"Code execution started at at (UTC):" +
+    print(f"Code execution for DSCOVR 1day data started at at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Set the font style to Times New Roman
@@ -306,5 +306,5 @@ def plot_figures_dsco_1day(sc):
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
 
-s.enter(0, 1, plot_figures_dsco_1day, (s,))
-s.run()
+#s.enter(0, 1, plot_figures_dsco_1day, (s,))
+#s.run()

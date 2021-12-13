@@ -8,10 +8,10 @@ import numpy as np
 import pandas as pd
 from matplotlib.dates import DateFormatter
 
-s = sched.scheduler(time.time, time.sleep)
+#s = sched.scheduler(time.time, time.sleep)
 
 
-def plot_figures_dsco(sc):
+def plot_figures_dsco():
 #for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
@@ -20,7 +20,7 @@ def plot_figures_dsco(sc):
     #s.enter(60, 1, plot_figures_dsco, (sc,))
 
     # start = time.time()
-    print(f"Code execution for DSCOVR started at (UTC):" +
+    print(f"Code execution for DSCOVR 2Hr data started at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Set the font style to Times New Roman
