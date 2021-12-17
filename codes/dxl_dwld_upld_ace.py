@@ -144,7 +144,7 @@ def plot_figures_ace():
 
     try:
         plt.close('all')
-    except:
+    except Exception:
         pass
 
     t1 = df_ace.index.max() - datetime.timedelta(minutes=30)
@@ -155,7 +155,7 @@ def plot_figures_ace():
     fig.suptitle(f'2 Hours ACE Real Time Data', fontsize=24)
 
     # Magnetic field plot
-    gs = fig.add_gridspec(6,1)
+    gs = fig.add_gridspec(6, 1)
     axs1 = fig.add_subplot(gs[0, 0])
     im1a = axs1.plot(df_ace.index, df_ace.bx_gsm, 'r-', lw=lw, ms=ms, label=r'$B_x$')
     im1b = axs1.plot(df_ace.index, df_ace.by_gsm, 'b-', lw=lw, ms=ms, label=r'$B_y$')
@@ -167,7 +167,7 @@ def plot_figures_ace():
     if df_ace.bm.isnull().all():
         axs1.set_ylim([-1, 1])
     else:
-        axs1.set_ylim(-1.1*np.nanmax(df_ace.bm), 1.1*np.nanmax(df_ace.bm))
+        axs1.set_ylim(-1.1 * np.nanmax(df_ace.bm), 1.1 * np.nanmax(df_ace.bm))
 
     axs1.set_xlim(df_ace.index.min(), df_ace.index.max())
     axs1.set_ylabel(r'B [nT]', fontsize=20 )
@@ -185,7 +185,7 @@ def plot_figures_ace():
     if df_ace.np.isnull().all():
         axs2.set_ylim([0, 1])
     else:
-        axs2.set_ylim(0.9*np.nanmin(df_ace.np), 1.1*np.nanmax(df_ace.np))
+        axs2.set_ylim(0.9 * np.nanmin(df_ace.np), 1.1 * np.nanmax(df_ace.np))
     lgnd2 = axs2.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd2.legendHandles[0]._sizes = [labelsize]
     axs2.set_ylabel(r'$n_p [1/\rm{cm^{3}}]$', fontsize=ylabelsize)
@@ -198,7 +198,7 @@ def plot_figures_ace():
     if df_ace.vp.isnull().all():
         axs3.set_ylim([0, 1])
     else:
-        axs3.set_ylim(0.9*np.nanmin(df_ace.vp), 1.1*np.nanmax(df_ace.vp))
+        axs3.set_ylim(0.9 * np.nanmin(df_ace.vp), 1.1 * np.nanmax(df_ace.vp))
     lgnd3 = axs3.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd3.legendHandles[0]._sizes = [labelsize]
     axs3.set_ylabel(r'$V_p [\rm{km/sec}]$', fontsize=ylabelsize)
@@ -212,8 +212,8 @@ def plot_figures_ace():
     if df_ace.flux.isnull().all():
         axs4.set_ylim([0, 1])
     else:
-        axs4.set_ylim(np.nanmin([0.9*np.nanmin(df_ace.flux), 2.4]),
-                      np.nanmax([1.1*np.nanmax(df_ace.flux), 3.3]))
+        axs4.set_ylim(np.nanmin([0.9 * np.nanmin(df_ace.flux), 2.4]),
+                      np.nanmax([1.1 * np.nanmax(df_ace.flux), 3.3]))
     lgnd4 = axs4.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd4.legendHandles[0]._sizes = [labelsize]
     axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, cm^2)}]$', fontsize=ylabelsize)
@@ -246,7 +246,7 @@ def plot_figures_ace():
         df_ace.lambda_ekl.isnull().all()):
         axs5.set_ylim([-1, 1])
     else:
-        axs5.set_ylim(0.97*min_lambda, 1.03*max_lambda)
+        axs5.set_ylim(0.97 * min_lambda, 1.03 * max_lambda)
     lgnd5 = axs5.legend(fontsize=labelsize, loc='best', ncol=4)
     lgnd5.legendHandles[0]._sizes = [labelsize]
 

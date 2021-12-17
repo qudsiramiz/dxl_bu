@@ -148,7 +148,7 @@ def plot_figures_dsco_7days():
 
     try:
         plt.close('all')
-    except:
+    except Exception:
         pass
 
     t1 = df_dsco.index.max() - datetime.timedelta(minutes=30)
@@ -158,7 +158,7 @@ def plot_figures_dsco_7days():
     fig.subplots_adjust(left=0.01, right=0.95, top=0.95, bottom=0.01, wspace=0.02, hspace=0.)
 
     # Magnetic field plot
-    gs = fig.add_gridspec(6,1)
+    gs = fig.add_gridspec(6, 1)
     axs1 = fig.add_subplot(gs[0, 0])
     axs1.plot(df_dsco.index, df_dsco.bx_gsm, 'r-', lw=lw, ms=ms, label=r'$B_x$')
     axs1.plot(df_dsco.index, df_dsco.by_gsm, 'b-', lw=lw, ms=ms, label=r'$B_y$')
@@ -170,7 +170,7 @@ def plot_figures_dsco_7days():
     if df_dsco.bm.isnull().all():
         axs1.set_ylim([-1, 1])
     else:
-        axs1.set_ylim(-1.1*np.nanmax(df_dsco.bm), 1.1*np.nanmax(df_dsco.bm))
+        axs1.set_ylim(-1.1 * np.nanmax(df_dsco.bm), 1.1 * np.nanmax(df_dsco.bm))
     axs1.set_xlim(df_dsco.index.min(), df_dsco.index.max())
     axs1.set_ylabel(r'B [nT]', fontsize=20 )
     lgnd1 = axs1.legend(fontsize=labelsize, loc='best', ncol=ncols)
@@ -186,7 +186,7 @@ def plot_figures_dsco_7days():
     if df_dsco.np.isnull().all():
         axs2.set_ylim([-1, 1])
     else:
-        axs2.set_ylim(0.9*np.nanmin(df_dsco.np), 1.1*np.nanmax(df_dsco.np))
+        axs2.set_ylim(0.9 * np.nanmin(df_dsco.np), 1.1 * np.nanmax(df_dsco.np))
     lgnd2 = axs2.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd2.legendHandles[0]._sizes = [labelsize]
     axs2.set_ylabel(r'$n_p [1/\rm{cm^{3}}]$', fontsize=ylabelsize)
@@ -200,7 +200,7 @@ def plot_figures_dsco_7days():
     if df_dsco.vp.isnull().all():
         axs3.set_ylim([-1, 1])
     else:
-        axs3.set_ylim(0.9*np.nanmin(df_dsco.vp), 1.1*np.nanmax(df_dsco.vp))
+        axs3.set_ylim(0.9 * np.nanmin(df_dsco.vp), 1.1 * np.nanmax(df_dsco.vp))
     lgnd3 = axs3.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd3.legendHandles[0]._sizes = [labelsize]
     axs3.set_ylabel(r'$V_p [\rm{km/sec}]$', fontsize=ylabelsize)
@@ -215,8 +215,8 @@ def plot_figures_dsco_7days():
     if df_dsco.flux.isnull().all():
         axs4.set_ylim([-1, 1])
     else:
-        axs4.set_ylim(np.nanmin([0.9*np.nanmin(df_dsco.flux), 2.4]),
-                      np.nanmax([1.1*np.nanmax(df_dsco.flux), 3.3]))
+        axs4.set_ylim(np.nanmin([0.9 * np.nanmin(df_dsco.flux), 2.4]),
+                      np.nanmax([1.1 * np.nanmax(df_dsco.flux), 3.3]))
     lgnd4 = axs4.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd4.legendHandles[0]._sizes = [labelsize]
     axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, cm^2)}]$', fontsize=ylabelsize)
@@ -249,14 +249,11 @@ def plot_figures_dsco_7days():
         df_dsco.lambda_ekl.isnull().all()):
         axs5.set_ylim([-1, 1])
     else:
-        axs5.set_ylim(0.97*min_lambda, 1.03*max_lambda)
+        axs5.set_ylim(0.97 * min_lambda, 1.03 * max_lambda)
     lgnd5 = axs5.legend(fontsize=labelsize, loc='best', ncol=4)
     lgnd5.legendHandles[0]._sizes = [labelsize]
 
-    axs5.set_xlabel(
-          f'Date starting on {df_dsco.index.date[0]} [UTC]',
-          fontsize=xlabelsize
-          )
+    axs5.set_xlabel(f'Date starting on {df_dsco.index.date[0]} [UTC]', fontsize=xlabelsize)
     axs5.set_ylabel(r'$\lambda[^\circ]$', fontsize=ylabelsize)
 
     # Set axis tick-parameters
