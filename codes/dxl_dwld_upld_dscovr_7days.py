@@ -254,7 +254,7 @@ def plot_figures_dsco_7days():
     lgnd5.legendHandles[0]._sizes = [labelsize]
 
     axs5.set_xlabel(
-          f'Time on {df_dsco.index.date[0]} [UTC]',
+          f'Date starting on {df_dsco.index.date[0]} [UTC]',
           fontsize=xlabelsize
           )
     axs5.set_ylabel(r'$\lambda[^\circ]$', fontsize=ylabelsize)

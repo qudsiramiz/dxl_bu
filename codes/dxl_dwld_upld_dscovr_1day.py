@@ -283,7 +283,7 @@ def plot_figures_dsco_1day():
                      width=tickwidth, length=ticklength, labelsize=ticklabelsize, labelrotation=0)
     axs5.yaxis.set_label_position("left")
 
-    date_form = DateFormatter("%d-%m")
+    date_form = DateFormatter("%H-%M")
     axs5.xaxis.set_major_formatter(date_form)
 
     figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"

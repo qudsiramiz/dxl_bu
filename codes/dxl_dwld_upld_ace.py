@@ -170,7 +170,7 @@ def plot_figures_ace():
         axs1.set_ylim(-1.1*np.nanmax(df_ace.bm), 1.1*np.nanmax(df_ace.bm))
 
     axs1.set_xlim(df_ace.index.min(), df_ace.index.max())
-    axs1.set_ylabel(r'B (nT)', fontsize=20 )
+    axs1.set_ylabel(r'B [nT]', fontsize=20 )
     lgnd1 = axs1.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd1.legendHandles[0]._sizes = [labelsize]
 
@@ -188,7 +188,7 @@ def plot_figures_ace():
         axs2.set_ylim(0.9*np.nanmin(df_ace.np), 1.1*np.nanmax(df_ace.np))
     lgnd2 = axs2.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd2.legendHandles[0]._sizes = [labelsize]
-    axs2.set_ylabel(r'$n_p (1/\rm{cm^{3}})$', fontsize=ylabelsize)
+    axs2.set_ylabel(r'$n_p [1/\rm{cm^{3}}]$', fontsize=ylabelsize)
 
     # Speed plot
     axs3 = fig.add_subplot(gs[2, 0], sharex=axs1)
@@ -201,7 +201,7 @@ def plot_figures_ace():
         axs3.set_ylim(0.9*np.nanmin(df_ace.vp), 1.1*np.nanmax(df_ace.vp))
     lgnd3 = axs3.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd3.legendHandles[0]._sizes = [labelsize]
-    axs3.set_ylabel(r'$V_p (\rm{km/sec})$', fontsize=ylabelsize)
+    axs3.set_ylabel(r'$V_p [\rm{km/sec}]$', fontsize=ylabelsize)
 
     # Flux plot
     axs4 = fig.add_subplot(gs[3, 0], sharex=axs1)
@@ -226,13 +226,13 @@ def plot_figures_ace():
                             np.nanmin(df_ace.lambda_wav),
                             np.nanmin(df_ace.lambda_vas),
                             np.nanmin(df_ace.lambda_ekl),
-                    ])
+    ])
     max_lambda = np.nanmax([
                             np.nanmax(df_ace.lambda_phi),
                             np.nanmax(df_ace.lambda_wav),
                             np.nanmax(df_ace.lambda_vas),
                             np.nanmax(df_ace.lambda_ekl),
-                    ])
+    ])
 
     im5a = axs5.plot(df_ace.index, df_ace.lambda_phi, 'r-', lw=lw, ms=ms, label=r'$d\phi/dt$')
     im5b = axs5.plot(df_ace.index, df_ace.lambda_wav, 'b-', lw=lw, ms=ms, label=r'WAV')
@@ -261,7 +261,7 @@ def plot_figures_ace():
             f'Time on {int(df_ace.year[count])}-{df_ace.month[count]}-{df_ace.date[count]} (UTC)',
             fontsize=xlabelsize
             )
-    axs5.set_ylabel(r'$\lambda^\circ$', fontsize=ylabelsize)
+    axs5.set_ylabel(r'$\lambda[^\circ]$', fontsize=ylabelsize)
 
     # Set axis tick-parameters
     axs1.tick_params(which='both', direction='in', left=True, labelleft=True, top=True,
