@@ -32,17 +32,18 @@ def dual_half_circle(center=(0,0), radius=1, angle=90, ax=None, colors=('w','k',
     theta1, theta2 = angle, angle + 180
     #w1 = Wedge(center, radius, theta1, theta2, fc=colors[0], **kwargs)
     #w2 = Wedge(center, radius, theta2, theta1, fc=colors[1], **kwargs)
-    
+
     w1 = Wedge(center, radius, theta1, theta2, fc=colors[1], **kwargs)
     w2 = Wedge(center, radius, theta2, theta1, fc=colors[0], **kwargs)
-   
+
     cr = Circle(center, radius, fc=colors[2], fill=False, **kwargs)
     for wedge in [w1, w2, cr]:
         ax.add_artist(wedge)
     return [w1, w2, cr]
 
 
-def setup_fig(xlim=(15, -30), ylim=(-15, 15), xlabel='X GSM [Re]', ylabel='Z GSM [Re]'):
+def setup_fig(xlim=(15, -30), ylim=(-15, 15), xlabel=r'X [GSM, $R_\oplus$]',
+              ylabel=r'Z [GSM, $R_\oplus$]'):
     """
     Set up the figure for plotting the field lines with real time data.
 
@@ -57,7 +58,7 @@ def setup_fig(xlim=(15, -30), ylim=(-15, 15), xlabel='X GSM [Re]', ylabel='Z GSM
     ax.set_ylim(ylim)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
-    
+
     ax.set_aspect('equal')
     _, _, _ = dual_half_circle(ax=ax)
 
@@ -183,7 +184,7 @@ def line_trace(sd):
             pass
 
         p = mp.Pool(30)
-        input = ((i, j) for i,j in itertools.product(theta_arr, phi_arr))
+        input = ((i, j) for i, j in itertools.product(theta_arr, phi_arr))
         res = p.map(trace_lines, input)
         p.close()
         p.join()
