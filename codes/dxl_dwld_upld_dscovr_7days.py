@@ -290,11 +290,17 @@ def plot_figures_dsco_7days():
 
     fig_name_git = "../figures/sw_dsco_parameters_7days.png"
     plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+
+    t = int(datetime.datetime.today().replace(tzinfo=datetime.timezone.utc).timestamp())
+    fig_name_hist = f"/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_parameters_7days_{t}.png"
+
     #plt.tight_layout()
 
     fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_dsco_parameters_7days.png"
 
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+    plt.savefig(fig_name_hist, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+
     #plt.tight_layout()
     #plt.close()
     print("Figure saved at (UTC):" +
