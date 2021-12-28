@@ -171,6 +171,7 @@ def plot_figures_dsco_7days():
         axs1.set_ylim([-1, 1])
     else:
         axs1.set_ylim(-1.1 * np.nanmax(df_dsco.bm), 1.1 * np.nanmax(df_dsco.bm))
+
     axs1.set_xlim(df_dsco.index.min(), df_dsco.index.max())
     axs1.set_ylabel(r'B [nT]', fontsize=20 )
     lgnd1 = axs1.legend(fontsize=labelsize, loc='best', ncol=ncols)
@@ -187,6 +188,7 @@ def plot_figures_dsco_7days():
         axs2.set_ylim([-1, 1])
     else:
         axs2.set_ylim(0.9 * np.nanmin(df_dsco.np), 1.1 * np.nanmax(df_dsco.np))
+
     lgnd2 = axs2.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd2.legendHandles[0]._sizes = [labelsize]
     axs2.set_ylabel(r'$n_p [1/\rm{cm^{3}}]$', fontsize=ylabelsize)
@@ -201,6 +203,7 @@ def plot_figures_dsco_7days():
         axs3.set_ylim([-1, 1])
     else:
         axs3.set_ylim(0.9 * np.nanmin(df_dsco.vp), 1.1 * np.nanmax(df_dsco.vp))
+
     lgnd3 = axs3.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd3.legendHandles[0]._sizes = [labelsize]
     axs3.set_ylabel(r'$V_p [\rm{km/sec}]$', fontsize=ylabelsize)
@@ -217,6 +220,7 @@ def plot_figures_dsco_7days():
     else:
         axs4.set_ylim(np.nanmin([0.9 * np.nanmin(df_dsco.flux), 2.4]),
                       np.nanmax([1.1 * np.nanmax(df_dsco.flux), 3.3]))
+
     lgnd4 = axs4.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd4.legendHandles[0]._sizes = [labelsize]
     axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, cm^2)}]$', fontsize=ylabelsize)
@@ -250,6 +254,7 @@ def plot_figures_dsco_7days():
         axs5.set_ylim([-1, 1])
     else:
         axs5.set_ylim(0.97 * min_lambda, 1.03 * max_lambda)
+
     lgnd5 = axs5.legend(fontsize=labelsize, loc='best', ncol=4)
     lgnd5.legendHandles[0]._sizes = [labelsize]
 
@@ -289,7 +294,15 @@ def plot_figures_dsco_7days():
             ha='right', va='center', transform=axs3.transAxes, fontsize=20, rotation='vertical')
 
     fig_name_git = "../figures/sw_dsco_parameters_7days.png"
+    fig_name_gdr = f"/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/sw_dsco_parameters_7days.png"
     plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+    plt.savefig(fig_name_gdr, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+
+    axs1.set_ylim([-22, 22])
+    axs2.set_ylim([0, 40])
+    axs3.set_ylim([250, 700])
+    axs4.set_ylim([0, 20])
+    axs5.set_ylim([60, 85])
 
     t = int(datetime.datetime.today().replace(tzinfo=datetime.timezone.utc).timestamp())
     fig_name_hist = f"/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_parameters_7days_{t}.png"

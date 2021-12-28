@@ -186,6 +186,7 @@ def plot_figures_ace():
         axs2.set_ylim([0, 1])
     else:
         axs2.set_ylim(0.9 * np.nanmin(df_ace.np), 1.1 * np.nanmax(df_ace.np))
+
     lgnd2 = axs2.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd2.legendHandles[0]._sizes = [labelsize]
     axs2.set_ylabel(r'$n_p [1/\rm{cm^{3}}]$', fontsize=ylabelsize)
@@ -199,6 +200,7 @@ def plot_figures_ace():
         axs3.set_ylim([0, 1])
     else:
         axs3.set_ylim(0.9 * np.nanmin(df_ace.vp), 1.1 * np.nanmax(df_ace.vp))
+
     lgnd3 = axs3.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd3.legendHandles[0]._sizes = [labelsize]
     axs3.set_ylabel(r'$V_p [\rm{km/sec}]$', fontsize=ylabelsize)
@@ -214,6 +216,7 @@ def plot_figures_ace():
     else:
         axs4.set_ylim(np.nanmin([0.9 * np.nanmin(df_ace.flux), 2.4]),
                       np.nanmax([1.1 * np.nanmax(df_ace.flux), 3.3]))
+
     lgnd4 = axs4.legend(fontsize=labelsize, loc='best', ncol=ncols)
     lgnd4.legendHandles[0]._sizes = [labelsize]
     axs4.set_ylabel(r'~~~~Flux\\ $10^8 [\rm{1/(sec\, cm^2)}]$', fontsize=ylabelsize)
@@ -247,6 +250,7 @@ def plot_figures_ace():
         axs5.set_ylim([-1, 1])
     else:
         axs5.set_ylim(0.97 * min_lambda, 1.03 * max_lambda)
+
     lgnd5 = axs5.legend(fontsize=labelsize, loc='best', ncol=4)
     lgnd5.legendHandles[0]._sizes = [labelsize]
 
@@ -297,9 +301,11 @@ def plot_figures_ace():
 
     fig_name_git = f"../figures/sw_ace_parameters_2hr.png"
     fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/sw_ace_parameters_2hr.png"
+    fig_name_gdr = f"/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/sw_ace_parameters_2hr.png"
 
     plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+    plt.savefig(fig_name_gdr, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     #plt.close()
     print("Figure saved for ACE at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")

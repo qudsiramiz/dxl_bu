@@ -55,17 +55,20 @@ def gif_maker(file_list, gif_name, mode="I", skip_rate=10, duration=0.05):
     if duration != float(duration):
         raise ValueError("duration must be a float")
 
+    count = 0
     with iio.get_writer(gif_name, mode=mode, duration=duration) as writer:
         for fl in file_list:
             image = iio.imread(fl)
             writer.append_data(image)
+            count += 1
+            print(f"{count} images added to the gif")
     writer.close()
-    optimize(gif_name)
+    #optimize(gif_name)
 
     print(f"{gif_name} is created\n")
 
-gif_path = "/home/cephadrius/Dropbox/DXL-Figure/gifs/"
-
+#gif_path = "/home/cephadrius/Dropbox/DXL-Figure/gifs/"
+gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/gifs/"
 def make_gifs(sc):
 
     s.enter(600, 1, make_gifs, (sc,))
@@ -73,18 +76,18 @@ def make_gifs(sc):
     print(f"Code execution started at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
     file_list_dict = {}
-    file_list_dict["file_list_2hr"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_*.png"))[-1500::60]
-
-    file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-1500::60]
-
-    file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[-1500::60]
-
-    file_list_dict["trace"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/*.png"))
+    #file_list_dict["file_list_2hr"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_*.png"))[-1500::60]
+#
+    #file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-1500::60]
+#
+    #file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[-1500::60]
+#
+    file_list_dict["trace"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/*.png"))[-354:]
 
     skip_rate_list = [1, 1, 1, 1]
     for i,key in enumerate(list(file_list_dict.keys())):
-        gif_name = f"{gif_path}{key}.gif"
-        gif_maker(file_list_dict[key], gif_name, mode="I", skip_rate=skip_rate_list[i], duration=0.1)
+        gif_name = f"{gif_path}{key}_300.gif"
+        gif_maker(file_list_dict[key], gif_name, mode="I", skip_rate=skip_rate_list[i], duration=0.04)
 
 s.enter(0, 1, make_gifs, (s,))
 s.run()

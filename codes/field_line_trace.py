@@ -211,12 +211,14 @@ def line_trace(sd):
                 ha='left', va='top', transform=ax.transAxes,
                 fontsize=12)
         fig_name = f"/home/cephadrius/Dropbox/DXL-Figure/Earths_magnetic_field.png"
+        fig_name_gdr = f"/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/Earths_magnetic_field.png"
 
         t = int(datetime.datetime.today().replace(tzinfo=datetime.timezone.utc).timestamp())
         fig_name_hist = f"/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/Earthsmagnetic_field_{t}.png"
 
         plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
         plt.savefig(fig_name_hist, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+        plt.savefig(fig_name_gdr, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
 
         print(f"Code execution finished at (UTC):" +
               f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
