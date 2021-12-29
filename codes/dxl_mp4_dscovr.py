@@ -99,7 +99,7 @@ elif vid_type == "mp4":
 
 def make_gifs(sc):
 
-    s.enter(600, 1, make_gifs, (sc,))
+    s.enter(6000, 1, make_gifs, (sc,))
 
     print(f"Code execution started at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
