@@ -258,7 +258,7 @@ def plot_figures_dsco_1day():
     lgnd5 = axs5.legend(fontsize=labelsize, loc='best', ncol=4)
     lgnd5.legendHandles[0]._sizes = [labelsize]
 
-    axs5.set_xlabel(f'Time on {df_dsco.index.date[0]} [UTC]', fontsize=xlabelsize)
+    axs5.set_xlabel(f'Time on {df_dsco.index.date[0]} (UTC) [HH:MM]', fontsize=xlabelsize)
     axs5.set_ylabel(r'$\lambda[^\circ]$', fontsize=ylabelsize)
 
     # Set axis tick-parameters
@@ -285,7 +285,7 @@ def plot_figures_dsco_1day():
                      width=tickwidth, length=ticklength, labelsize=ticklabelsize, labelrotation=0)
     axs5.yaxis.set_label_position("left")
 
-    date_form = DateFormatter("%H-%M")
+    date_form = DateFormatter("%H:%M")
     axs5.xaxis.set_major_formatter(date_form)
 
     figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
@@ -311,7 +311,7 @@ def plot_figures_dsco_1day():
     fig_name_hist = f"/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_parameters_1day_{t}.png"
     plt.savefig(fig_name_hist, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     #plt.tight_layout()
-    #plt.close()
+    plt.close("all")
     print("Figure saved at (UTC):" +
         f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 

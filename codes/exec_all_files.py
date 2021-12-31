@@ -12,6 +12,8 @@ from dxl_dwld_upld_ace import plot_figures_ace
 from dxl_dwld_upld_dscovr import plot_figures_dsco
 from dxl_dwld_upld_dscovr_1day import plot_figures_dsco_1day
 from dxl_dwld_upld_dscovr_7days import plot_figures_dsco_7days
+from dxl_dwld_upld_ace_ftp import plot_figures_ace_ftp
+from dxl_dwld_upld_ace_ftp_v2 import plot_figures_ace_ftp_v2
 
 s_exec = sched.scheduler(time.time, time.sleep)
 
@@ -36,20 +38,35 @@ def execute_all_files(sc):
 
     s_ace = sched.scheduler(time.time, time.sleep)
     s_dscovr = sched.scheduler(time.time, time.sleep)
-    s_dscovr1 = sched.scheduler(time.time, time.sleep)
-    s_dscovr7 = sched.scheduler(time.time, time.sleep)
 
-    s_ace.enter(0, 1, plot_figures_ace)
-    s_ace.run()
+    s_dscovr1 = sched.scheduler(time.time, time.sleep)
+    s_ace1 = sched.scheduler(time.time, time.sleep)
+
+    s_dscovr7 = sched.scheduler(time.time, time.sleep)
+    s_ace7 = sched.scheduler(time.time, time.sleep)
+
+    s_ace27 = sched.scheduler(time.time, time.sleep)
 
     s_dscovr.enter(0, 1, plot_figures_dsco)
     s_dscovr.run()
 
+    s_ace.enter(0, 1, plot_figures_ace)
+    s_ace.run()
+
     s_dscovr1.enter(0, 1, plot_figures_dsco_1day)
     s_dscovr1.run()
 
+    s_ace1.enter(0, 1, plot_figures_ace_ftp_v2, [1])
+    s_ace1.run()
+
     s_dscovr7.enter(0, 1, plot_figures_dsco_7days)
     s_dscovr7.run()
+
+    s_ace7.enter(0, 1, plot_figures_ace_ftp_v2, [7])
+    s_ace7.run()
+
+    s_ace27.enter(0, 1, plot_figures_ace_ftp_v2, [27])
+    s_ace27.run()
 
 s_exec.enter(0, 1, execute_all_files, (s_exec,))
 s_exec.run()
