@@ -319,7 +319,7 @@ def plot_figures_dsco_7days():
     plt.savefig(fig_name_hist, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
 
     #plt.tight_layout()
-    #plt.close()
+    plt.close("all")
     print("Figure saved at (UTC):" +
         f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 

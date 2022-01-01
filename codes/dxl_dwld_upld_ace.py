@@ -306,7 +306,7 @@ def plot_figures_ace():
     plt.savefig(fig_name_git, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
     plt.savefig(fig_name_gdr, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
-    #plt.close()
+    plt.close("all")
     print("Figure saved for ACE at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
