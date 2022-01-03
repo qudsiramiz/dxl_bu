@@ -86,4 +86,8 @@ axs2.plot(df_dsco_eph.index, df_dsco_eph["r"], color='r', linestyle='-', linewid
 axs2.plot(df_ace_eph.index, df_ace_eph["r"], color='b', linestyle='--', linewidth=lw, label='ACE')
 axs2.set_ylabel(r'Spacecraft position [$R_\oplus$]', fontsize=labelsize)
 axs2.set_xlabel('Time [MM:DD HH]', fontsize=labelsize)
-plt.show()
+
+fig_name = f"/media/cephadrius/endless/bu_research/dxl/figures/ace_dscovr_data_comparison.png"
+plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
+plt.close("all")
+#plt.show()

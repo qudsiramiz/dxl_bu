@@ -35,39 +35,40 @@ def plot_figures_dsco():
 
     dscovr_key_list_mag = ["time_tag", "bx_gsm", "by_gsm", "bz_gsm", "lon_gsm", "lat_gsm", "bt"]
     dscovr_key_list_plas = ["time_tag", "np", "vp", "Tp"]
-    dscovr_key_list_eph = ["time_tag", "x_gse", "y_gse", "z_gse", "vx_gse", "vy_gse", "vz_gse",
-                           "x_gsm", "y_gsm", "z_gsm", "vx_gsm", "vy_gsm", "vz_gsm"]
+    #dscovr_key_list_eph = ["time_tag", "x_gse", "y_gse", "z_gse", "vx_gse", "vy_gse", "vz_gse",
+    #                       "x_gsm", "y_gsm", "z_gsm", "vx_gsm", "vy_gsm", "vz_gsm"]
 
     df_dsco_mag = pd.read_json(dscovr_url_mag, orient='columns')
     df_dsco_plas = pd.read_json(dscovr_url_plas, orient='columns')
-    df_dsco_eph = pd.read_json(dscovr_url_eph, orient='columns')
+    #df_dsco_eph = pd.read_json(dscovr_url_eph, orient='columns')
 
     # Drop the first row of the dataframe to get rid of all strings
     df_dsco_mag.drop([0], inplace=True)
     df_dsco_plas.drop([0], inplace=True)
-    df_dsco_eph.drop([0], inplace=True)
+    #df_dsco_eph.drop([0], inplace=True)
 
     # Set column names to the list of keys
     df_dsco_mag.columns = dscovr_key_list_mag
     df_dsco_plas.columns = dscovr_key_list_plas
-    df_dsco_eph.columns = dscovr_key_list_eph
+    #df_dsco_eph.columns = dscovr_key_list_eph
 
     # Set the index to the time_tag column and convert it to a datetime object
     df_dsco_mag.index = pd.to_datetime(df_dsco_mag.time_tag)
     df_dsco_plas.index = pd.to_datetime(df_dsco_plas.time_tag)
-    df_dsco_eph.index = pd.to_datetime(df_dsco_eph.time_tag)
+    #df_dsco_eph.index = pd.to_datetime(df_dsco_eph.time_tag)
 
     # Drop the time_tag column
     df_dsco_mag.drop(["time_tag"], axis=1, inplace=True)
     df_dsco_plas.drop(["time_tag"], axis=1, inplace=True)
-    df_dsco_eph.drop(["time_tag"], axis=1, inplace=True)
+    #df_dsco_eph.drop(["time_tag"], axis=1, inplace=True)
 
-    df_dsco_eph = df_dsco_eph[(df_dsco_eph.index >=
-                               np.nanmin([df_dsco_mag.index.min(), df_dsco_plas.index.min()])) & 
-                              (df_dsco_eph.index <=
-                               np.nanmax([df_dsco_mag.index.max(), df_dsco_plas.index.max()]))]
+    #df_dsco_eph = df_dsco_eph[(df_dsco_eph.index >=
+    #                           np.nanmin([df_dsco_mag.index.min(), df_dsco_plas.index.min()])) & 
+    #                          (df_dsco_eph.index <=
+    #                           np.nanmax([df_dsco_mag.index.max(), df_dsco_plas.index.max()]))]
 
-    df_dsco = pd.concat([df_dsco_mag, df_dsco_plas, df_dsco_eph], axis=1)
+    #df_dsco = pd.concat([df_dsco_mag, df_dsco_plas, df_dsco_eph], axis=1)
+    df_dsco = pd.concat([df_dsco_mag, df_dsco_plas], axis=1)
 
     # for key in df_dsco.keys():
     #     df_dsco[key] = pd.to_numeric(df_dsco[key])
