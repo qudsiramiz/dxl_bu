@@ -191,5 +191,3 @@ for key in dat_gam.keys( ) :
 hf_f.close()
 
 dat_omnl = hf.File( 'data/gamma_k_r_b_omnl_WIND_v2.h5', 'r+' )
-
-test
