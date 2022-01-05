@@ -1,7 +1,8 @@
-import pandas as pd
-import numpy as np
 import datetime
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from matplotlib.dates import DateFormatter
 
 # Set the font style to Times New Roman
@@ -131,3 +132,12 @@ fig_name = f"../figures/ace_dscovr_data_comparison_v2.png"
 plt.savefig(fig_name, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
 #plt.close("all")
 plt.show()
+
+# Code to read a net cdf file
+from scipy.io import netcdf
+nc = netcdf.netcdf_file(f"../data/ace_dscovr_data_comparison.nc", 'r')
+nc.variables
+nc.dimensions
+nc.variables['time'].data
+nc.variables['time'].units
+nc.variables['time'].dimensions
