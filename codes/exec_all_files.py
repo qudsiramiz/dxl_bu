@@ -45,28 +45,55 @@ def execute_all_files(sc):
     s_dscovr7 = sched.scheduler(time.time, time.sleep)
     s_ace7 = sched.scheduler(time.time, time.sleep)
 
-    s_ace27 = sched.scheduler(time.time, time.sleep)
+    #s_ace27 = sched.scheduler(time.time, time.sleep)
 
-    s_dscovr.enter(0, 1, plot_figures_dsco)
-    s_dscovr.run()
+    try:
+        s_dscovr.enter(0, 1, plot_figures_dsco)
+        s_dscovr.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_ace.enter(0, 1, plot_figures_ace)
-    s_ace.run()
+    try:
+        s_ace.enter(0, 1, plot_figures_ace)
+        s_ace.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_dscovr1.enter(0, 1, plot_figures_dsco_1day)
-    s_dscovr1.run()
+    try:
+        s_dscovr1.enter(0, 1, plot_figures_dsco_1day)
+        s_dscovr1.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_ace1.enter(0, 1, plot_figures_ace_ftp_v2, [1])
-    s_ace1.run()
+    try:
+        s_ace1.enter(0, 1, plot_figures_ace_ftp_v2, [1])
+        s_ace1.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_dscovr7.enter(0, 1, plot_figures_dsco_7days)
-    s_dscovr7.run()
+    try:
+        s_dscovr7.enter(0, 1, plot_figures_dsco_7days)
+        s_dscovr7.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_ace7.enter(0, 1, plot_figures_ace_ftp_v2, [7])
-    s_ace7.run()
+    try:
+        s_ace7.enter(0, 1, plot_figures_ace_ftp_v2, [7])
+        s_ace7.run()
+    except Exception as e:
+        print(e)
+        pass
 
-    s_ace27.enter(0, 1, plot_figures_ace_ftp_v2, [27])
-    s_ace27.run()
+    # try:
+        #s_ace27.enter(0, 1, plot_figures_ace_ftp_v2, [27])
+        #s_ace27.run()
+    # except Exception as e:
+        #print(e)
 
 s_exec.enter(0, 1, execute_all_files, (s_exec,))
 s_exec.run()

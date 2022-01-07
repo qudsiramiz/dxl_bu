@@ -352,8 +352,6 @@ def plot_figures_ace_ftp_v2(*args):
         axs5.tick_params(which='both', axis='x', direction='in', left=True, labelleft=True, top=True,
                      labeltop=False, right=True, labelright=False, bottom=True, labelbottom=True,
                      width=tickwidth, length=ticklength, labelsize=ticklabelsize, labelrotation=0)
-
-
     else:
         date_form = DateFormatter('%d, %H:%M')
         axs5.set_xlabel(
