@@ -89,7 +89,7 @@ def gif_maker(file_list, vid_name, mode="I", skip_rate=10, vid_type="mp4", durat
 
     print(f"{vid_name} is created\n")
 
-vid_type = "gif"  # "gif" or "mp4"
+vid_type = "mp4"  # "gif" or "mp4"
 if vid_type == "gif":
     #gif_path = "/home/cephadrius/Dropbox/DXL-Figure/gifs/"
     gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/gifs/"
@@ -106,7 +106,7 @@ def make_gifs(sc):
     file_list_dict = {}
     #file_list_dict["file_list_2hr"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_*.png"))[-1500::60]
 
-    file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-1500::60]
+    file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-1500::20]
 
     #file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[::60]
 
