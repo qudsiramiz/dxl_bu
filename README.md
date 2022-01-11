@@ -10,3 +10,6 @@ The following website uses these codes to generate imnages: https://sites.bu.edu
 
 ![](https://www.dropbox.com/s/qfg3v6pu3khmbt9/Earths_magnetic_field.png?raw=1)
 Real-time earth's magnetic field
+
+![](https://github.com/qudsiramiz/dxl_bu/blob/main/figures/gifs/trace_300.gif)
+GIF
