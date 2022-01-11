@@ -50,11 +50,11 @@ def gif_maker(file_list, vid_name, mode="I", skip_rate=10, vid_type="mp4", durat
         raise ValueError("vid_name is None. Please provide the name of the gif/video")
     if len(file_list) == 0:
         raise ValueError("file_list is empty")
-    if len(file_list) >= 1501:
-        # Check if the skip_rate is an integer
-        if skip_rate != int(skip_rate):
-            raise ValueError("skip_rate must be an integer")
-        file_list = file_list[-1500::skip_rate]
+    #if len(file_list) >= 1501:
+    #    # Check if the skip_rate is an integer
+    #    if skip_rate != int(skip_rate):
+    #        raise ValueError("skip_rate must be an integer")
+    #    file_list = file_list[-1500::skip_rate]
     if vid_type == "gif":
         if duration != float(duration):
             raise ValueError("duration must be a float")
@@ -106,16 +106,20 @@ def make_gifs(sc):
     file_list_dict = {}
     #file_list_dict["file_list_2hr"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_*.png"))[-1500::60]
 
-    file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-1500::20]
+    #file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-4500::20]
 
-    #file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[::60]
+    file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[-2000::1]
 
-    #file_list_dict["trace"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/*.png"))[-1500:]
+    #file_list_dict["trace"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/*.png"))[-4000:]
 
     skip_rate_list = [1, 1, 1, 1]
     for i,key in enumerate(list(file_list_dict.keys())):
-        vid_name = f"{gif_path}{key}.{vid_type}"
-        gif_maker(file_list_dict[key], vid_name, mode="I", skip_rate=skip_rate_list[i], vid_type=vid_type, fps=25, duration=0.05)
+        vid_name = f"{gif_path}{key}_2000.{vid_type}"
+        try:
+            gif_maker(file_list_dict[key], vid_name, mode="I", skip_rate=skip_rate_list[i], vid_type=vid_type, fps=25, duration=0.05)
+        except ValueError as e:
+            print(e)
+            pass
 
 s.enter(0, 1, make_gifs, (s,))
 s.run()
