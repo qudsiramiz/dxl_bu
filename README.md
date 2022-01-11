@@ -8,8 +8,5 @@ The following website uses these codes to generate imnages: https://sites.bu.edu
 ![](https://www.dropbox.com/s/37t7ag3pkcfeg4u/sw_dsco_parameters_7days.png?raw=1)
 7-days hourly average of selected/relevant solar wind parameters from DSCOVR spacecraft.
 
-![](https://www.dropbox.com/s/qfg3v6pu3khmbt9/Earths_magnetic_field.png?raw=1)
-Real-time earth's magnetic field
-
 ![](https://github.com/qudsiramiz/dxl_bu/blob/main/figures/gifs/trace_300.gif)
-GIF
+Real-time earth's magnetic field
