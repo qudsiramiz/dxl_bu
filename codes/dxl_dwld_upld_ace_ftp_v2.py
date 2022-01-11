@@ -362,8 +362,6 @@ def plot_figures_ace_ftp_v2(*args):
                      labeltop=False, right=True, labelright=False, bottom=True, labelbottom=True,
                      width=tickwidth, length=ticklength, labelsize=ticklabelsize, labelrotation=30)
 
-
-
     axs5.xaxis.set_major_formatter(date_form)
     figure_time = f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}"
 
