@@ -5,8 +5,13 @@ The code also creates real time magnetic field figure around Earth using Tsygane
 
 The following website uses these codes to generate imnages: https://sites.bu.edu/bwalsh/research/real-time-cusp/
 
-![](https://www.dropbox.com/s/37t7ag3pkcfeg4u/sw_dsco_parameters_7days.png?raw=1)
+
+https://user-images.githubusercontent.com/25327981/149005958-7b63acaa-acc2-472d-98b7-a22037e537a9.mp4
+
 7-days hourly average of selected/relevant solar wind parameters from DSCOVR spacecraft.
 
-![](https://github.com/qudsiramiz/dxl_bu/blob/main/figures/gifs/trace_300.gif)
+
+
+https://user-images.githubusercontent.com/25327981/149004723-c23b4b43-db67-4f84-ac72-634e33dfad6a.mov
+
 Real-time earth's magnetic field
