@@ -15,8 +15,8 @@ from scipy.io import netcdf
 s = sched.scheduler(time.time, time.sleep)
 
 
-def plot_figures_dsco_54days(sc):
-#for xx in range(1):
+#def plot_figures_dsco_54days(sc):
+for xx in range(1):
     """
     Download and plot the data from DSCOVR for the last 54 days starting from the present time.
     """
@@ -30,7 +30,7 @@ def plot_figures_dsco_54days(sc):
     plt.rc('text', usetex=True)
 
     # Set up the time to run the job
-    s.enter(3600, 1, plot_figures_dsco_54days, (sc,))
+    #s.enter(3600, 1, plot_figures_dsco_54days, (sc,))
 
     # start = time.time()
     # Find the present time in unix time
@@ -38,7 +38,7 @@ def plot_figures_dsco_54days(sc):
     time_now = (datetime.datetime.utcnow() - t_unix).total_seconds()
 
     # Set the start and end time (in unix time, 54 days interval)
-    time_start = time_now - (60 * 60 * 24 * 54)
+    time_start = time_now - (60 * 60 * 24 * 1)
     time_end = time_now
 
     # Change the directory to the data directory
@@ -380,5 +380,5 @@ def plot_figures_dsco_54days(sc):
     # print(f'It took {round(time.time() - start, 3)} seconds')
     #return df
 
-s.enter(0, 1, plot_figures_dsco_54days, (s,))
-s.run()
+#s.enter(0, 1, plot_figures_dsco_54days, (s,))
+#s.run()

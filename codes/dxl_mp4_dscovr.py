@@ -92,14 +92,16 @@ def gif_maker(file_list, vid_name, mode="I", skip_rate=10, vid_type="mp4", durat
 vid_type = "mp4"  # "gif" or "mp4"
 if vid_type == "gif":
     #gif_path = "/home/cephadrius/Dropbox/DXL-Figure/gifs/"
-    gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/gifs/"
+    #gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/gifs/"
+    gif_path = "/media/cephadrius/endless/bu_research/dxl/figures/gifs/"
 elif vid_type == "mp4":
     #gif_path = "/home/cephadrius/Dropbox/DXL-Figure/vids/"
-    gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/vids/"
+    #gif_path = "/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/vids/"
+    gif_path = "/home/cephadrius/Desktop/git/qudsiramiz.github.io/images/moving_pictures/"
 
-def make_gifs(sc):
-
-    s.enter(6000, 1, make_gifs, (sc,))
+#def make_gifs(sc):
+for xxx in range(1, 2):
+    #s.enter(6000, 1, make_gifs, (sc,))
 
     print(f"Code execution started at (UTC):" +
           f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
@@ -108,18 +110,21 @@ def make_gifs(sc):
 
     #file_list_dict["file_list_1day"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/1day/sw_dsco_*.png"))[-4500::20]
 
-    file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[-2000::1]
+    #file_list_dict["file_list_7days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/7days/sw_dsco_*.png"))[-2000::1]
 
     #file_list_dict["trace"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/line_trace/*.png"))[-4000:]
 
+    file_list_dict["file_list_30days"] = np.sort(glob.glob("/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/30days/sw_dsco*.png"))[:]
+
     skip_rate_list = [1, 1, 1, 1]
     for i,key in enumerate(list(file_list_dict.keys())):
-        vid_name = f"{gif_path}{key}_2000.{vid_type}"
+        #vid_name = f"{gif_path}{key}.{vid_type}"
+        vid_name = f"{gif_path}DSCOVR_30days_hourly_averaged.mp4"
         try:
             gif_maker(file_list_dict[key], vid_name, mode="I", skip_rate=skip_rate_list[i], vid_type=vid_type, fps=25, duration=0.05)
         except ValueError as e:
             print(e)
             pass
 
-s.enter(0, 1, make_gifs, (s,))
-s.run()
+#s.enter(0, 1, make_gifs, (s,))
+#s.run()
