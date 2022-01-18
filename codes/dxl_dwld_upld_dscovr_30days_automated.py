@@ -18,8 +18,9 @@ from scipy.io import netcdf
 s = sched.scheduler(time.time, time.sleep)
 
 
-#def plot_figures_dsco_30days(sc):
-for xx in range(1):
+def plot_figures_dsco_30days(number_of_days=30):
+#for xx in range(1):
+#    number_of_days=35
     """
     Download and plot the data from DSCOVR for the last 30 days starting from the present time.
     """
@@ -41,7 +42,7 @@ for xx in range(1):
     time_now = (datetime.datetime.utcnow() - t_unix).total_seconds()
 
     # Set the start and end time (in unix time, 30 days interval)
-    time_start = time_now - (60 * 60 * 24 * 365)
+    time_start = time_now - (60 * 60 * 24 * number_of_days)
     time_end = time_now
 
     # Change the directory to the data directory
@@ -55,8 +56,8 @@ for xx in range(1):
     #date_end = datetime.datetime.utcfromtimestamp(time_end).strftime('%Y-%m-%d')
 
     time_mag_data = time_start
-    ttt = time_start + 60*60*24*35
-    while time_mag_data < ttt:
+
+    while time_mag_data < time_end:
         year = datetime.datetime.utcfromtimestamp(time_mag_data).strftime('%Y')
         month = datetime.datetime.utcfromtimestamp(time_mag_data).strftime('%m')
         day = datetime.datetime.utcfromtimestamp(time_mag_data).strftime('%d')
@@ -88,7 +89,7 @@ for xx in range(1):
         #        continue
 
     time_plasma_data = time_start
-    while time_plasma_data < ttt:
+    while time_plasma_data < time_end:
         year = datetime.datetime.utcfromtimestamp(time_plasma_data).strftime('%Y')
         month = datetime.datetime.utcfromtimestamp(time_plasma_data).strftime('%m')
         day = datetime.datetime.utcfromtimestamp(time_plasma_data).strftime('%d')
@@ -131,9 +132,9 @@ for xx in range(1):
     os.chdir("/home/cephadrius/Desktop/git/dxl_bu/codes")
 
     plas_file_list = np.sort(
-        glob.glob("/media/cephadrius/endless/bu_research/dxl/data/dscovr_data/oe_f1m_*.nc"))
+        glob.glob("/media/cephadrius/endless/bu_research/dxl/data/dscovr_data/oe_f1m_*.nc"))[-number_of_days:]
     mag_file_list = np.sort(
-        glob.glob("/media/cephadrius/endless/bu_research/dxl/data/dscovr_data/oe_m1m_*.nc"))
+        glob.glob("/media/cephadrius/endless/bu_research/dxl/data/dscovr_data/oe_m1m_*.nc"))[-number_of_days:]
 
     df_mag_list = [None] * len(mag_file_list)
     df_plas_list = [None] * len(plas_file_list)
