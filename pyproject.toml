@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "dxl_bu"
+version = "0.1.0"
+description = "Python codes for real time solar wind conditions and cusp location"
+authors = ["Ramiz Qudsi <qudsiramiz@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.12"
+geopack = "^1.0.10"
+pandas = "^2.1.1"
+matplotlib = "3.5.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
