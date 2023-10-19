@@ -15,8 +15,8 @@ from matplotlib.dates import DateFormatter
 s = sched.scheduler(time.time, time.sleep)
 
 
-# def plot_figures_ace_ftp_v2(*args):
-for xx in range(1, 2):
+def plot_figures_ace_ftp_v2(*args):
+    # for xx in range(1, 2):
     #    plot_duration=1
     """
     Download ACE data from FTP server, and make plots corresponding to the plot duration in days.
