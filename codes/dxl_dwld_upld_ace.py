@@ -240,7 +240,7 @@ def plot_figures_ace():
     im1d = axs1.plot(
         df_ace.index.values, df_ace.bm.values, "k-.", lw=lw, ms=ms, label=r"$|\vec{B}|$"
     )
-    im1e = axs1.plot(df_ace.index, -df_ace.bm, "k-.", lw=lw, ms=ms)
+    im1e = axs1.plot(df_ace.index.values, -df_ace.bm.values, "k-.", lw=lw, ms=ms)
     axs1.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_ace.bm.isnull().all():
