@@ -33,7 +33,6 @@ def plot_figures_ace_ftp_v2(*args):
     # Set up the time to run the job
     # s.enter(60, 1, plot_figures_ace_7days, (sc,))
 
-    # args = [1]
     plot_duration = args[0]
     # start = time.time()
     print(
