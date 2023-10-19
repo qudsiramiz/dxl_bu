@@ -1,3 +1,5 @@
+#!/home/cephadrius/.cache/pypoetry/virtualenvs/dxl-bu-jVBu7xQf-py3.10/bin/python
+# -*- coding: utf-8 -*-
 # Code to read a net cdf file
 import datetime
 import glob

@@ -1,3 +1,5 @@
+#!/home/cephadrius/.cache/pypoetry/virtualenvs/dxl-bu-jVBu7xQf-py3.10/bin/python
+# -*- coding: utf-8 -*-
 import datetime
 import glob
 import os
@@ -16,17 +18,17 @@ time_start = time_now - (60 * 60 * 24 * 14)
 time_end = time_now
 os.chdir("/mnt/cephadrius/bu_research/dxl/data/dscovr_data/")
 # Find the date corresponding to the time
-date_start = datetime.datetime.utcfromtimestamp(time_start).strftime('%Y-%m-%d')
-date_end = datetime.datetime.utcfromtimestamp(time_end).strftime('%Y-%m-%d')
+date_start = datetime.datetime.utcfromtimestamp(time_start).strftime("%Y-%m-%d")
+date_end = datetime.datetime.utcfromtimestamp(time_end).strftime("%Y-%m-%d")
 
 time_data = time_start
 while time_data < time_end:
-    year = datetime.datetime.utcfromtimestamp(time_data).strftime('%Y')
-    month = datetime.datetime.utcfromtimestamp(time_data).strftime('%m')
-    day = datetime.datetime.utcfromtimestamp(time_data).strftime('%d')
+    year = datetime.datetime.utcfromtimestamp(time_data).strftime("%Y")
+    month = datetime.datetime.utcfromtimestamp(time_data).strftime("%m")
+    day = datetime.datetime.utcfromtimestamp(time_data).strftime("%d")
     print(day)
     url = f"https://www.ngdc.noaa.gov/dscovr/data/{year}/{str(month).zfill(2)}/"
-    file_name = f'oe_f1m_dscovr_s{year}{str(month).zfill(2)}{str(day).zfill(2)}*.gz'
+    file_name = f"oe_f1m_dscovr_s{year}{str(month).zfill(2)}{str(day).zfill(2)}*.gz"
     os.system(f"""wget -r -np -nc -nH -nd -A {file_name} {url}""")
     time_data += 60 * 60 * 24
 

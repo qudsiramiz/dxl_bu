@@ -1,3 +1,5 @@
+#!/home/cephadrius/.cache/pypoetry/virtualenvs/dxl-bu-jVBu7xQf-py3.10/bin/python
+# -*- coding: utf-8 -*-
 import datetime
 import sched
 import time
@@ -527,6 +529,3 @@ def plot_figures_dsco_1day():
 
 # s.enter(0, 1, plot_figures_dsco_1day, (s,))
 # s.run()
-
-if __name__ == "__main__":
-    plot_figures_dsco_1day()
