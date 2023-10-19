@@ -237,7 +237,7 @@ def plot_figures_dsco_1day():
         ms=ms,
         label=r"$|\vec{B}|$",
     )
-    axs1.plot(df_dsco.index, -df_dsco.bm, "k-.", lw=lw, ms=ms)
+    axs1.plot(df_dsco.index.values, -df_dsco.bm.values, "k-.", lw=lw, ms=ms)
     axs1.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.bm.isnull().all():
