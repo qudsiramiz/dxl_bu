@@ -11,8 +11,8 @@ from matplotlib.dates import DateFormatter
 s = sched.scheduler(time.time, time.sleep)
 
 
-# def plot_figures_ace_1day():
-for foo in range(1):
+def plot_figures_ace_1day():
+    # for foo in range(1):
     """
     Download and upload data the ACE database hosted at https://services.swpc.noaa.gov/text
     """
@@ -461,7 +461,7 @@ for foo in range(1):
     fig_name_git = "../figures/sw_ace_parameters_1day.png"
     fig_name_gdr = f"/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/sw_ace_parameters_1day.png"
 
-    # plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
+    plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
     plt.savefig(
         fig_name_git, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300
     )
@@ -494,5 +494,5 @@ for foo in range(1):
 # s.enter(0, 1, plot_figures_ace_1day, (s,))
 # s.run()
 
-# if __name__ == "__main__":
-#     plot_figures_ace_1day()
+if __name__ == "__main__":
+    plot_figures_ace_1day()
