@@ -14,7 +14,7 @@ t_unix = datetime.datetime(1970, 1, 1)
 time_now = (datetime.datetime.utcnow() - t_unix).total_seconds()
 time_start = time_now - (60 * 60 * 24 * 14)
 time_end = time_now
-os.chdir("/media/cephadrius/endless/bu_research/dxl/data/dscovr_data/")
+os.chdir("/mnt/cephadrius/bu_research/dxl/data/dscovr_data/")
 # Find the date corresponding to the time
 date_start = datetime.datetime.utcfromtimestamp(time_start).strftime('%Y-%m-%d')
 date_end = datetime.datetime.utcfromtimestamp(time_end).strftime('%Y-%m-%d')
