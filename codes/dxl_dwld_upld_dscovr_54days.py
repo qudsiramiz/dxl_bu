@@ -398,8 +398,8 @@ def plot_figures_dsco_54days():
     )
 
     im5a = axs5.plot(
-        df_dscovr.index,
-        df_dscovr.values.lambda_phi.values,
+        df_dscovr.index.values,
+        df_dscovr.lambda_phi.values,
         "r-",
         lw=lw,
         ms=ms,
