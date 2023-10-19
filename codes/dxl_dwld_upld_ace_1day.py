@@ -461,7 +461,7 @@ for foo in range(1):
     fig_name_git = "../figures/sw_ace_parameters_1day.png"
     fig_name_gdr = f"/home/cephadrius/google-drive/Studies/Research/bu_research/dxl/figures/sw_ace_parameters_1day.png"
 
-    plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
+    # plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
     plt.savefig(
         fig_name_git, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300
     )
