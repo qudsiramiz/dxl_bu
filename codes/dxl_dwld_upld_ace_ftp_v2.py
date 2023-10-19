@@ -288,11 +288,19 @@ for xx in range(1, 2):
     # Magnetic field plot
     gs = fig.add_gridspec(6, 1)
     axs1 = fig.add_subplot(gs[0, 0])
-    im1a = axs1.plot(df_ace.index, df_ace.bx_gsm, "r-", lw=lw, ms=ms, label=r"$B_x$")
-    im1b = axs1.plot(df_ace.index, df_ace.by_gsm, "b-", lw=lw, ms=ms, label=r"$B_y$")
-    im1c = axs1.plot(df_ace.index, df_ace.bz_gsm, "g-", lw=lw, ms=ms, label=r"$B_z$")
-    im1d = axs1.plot(df_ace.index, df_ace.bm, "k-.", lw=lw, ms=ms, label=r"$|\vec{B}|$")
-    im1e = axs1.plot(df_ace.index, -df_ace.bm, "k-.", lw=lw, ms=ms)
+    im1a = axs1.plot(
+        df_ace.index.values, df_ace.bx_gsm.values, "r-", lw=lw, ms=ms, label=r"$B_x$"
+    )
+    im1b = axs1.plot(
+        df_ace.index.values, df_ace.by_gsm.values, "b-", lw=lw, ms=ms, label=r"$B_y$"
+    )
+    im1c = axs1.plot(
+        df_ace.index.values, df_ace.bz_gsm.values, "g-", lw=lw, ms=ms, label=r"$B_z$"
+    )
+    im1d = axs1.plot(
+        df_ace.index.values, df_ace.bm.values, "k-.", lw=lw, ms=ms, label=r"$|\vec{B}|$"
+    )
+    im1e = axs1.plot(df_ace.index.values, -df_ace.bm.values, "k-.", lw=lw, ms=ms)
     axs1.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_ace.bm.isnull().all():
@@ -310,8 +318,10 @@ for xx in range(1, 2):
 
     # Density plot
     axs2 = fig.add_subplot(gs[1, 0], sharex=axs1)
-    im2 = axs2.plot(df_ace.index, df_ace.np, "r-", lw=lw, ms=ms, label=r"$n_p$")
-    axs2.plot(df_ace_hc.index, df_ace_hc.np, color="r", lw=1, alpha=alpha)
+    im2 = axs2.plot(
+        df_ace.index.values, df_ace.np.values, "r-", lw=lw, ms=ms, label=r"$n_p$"
+    )
+    axs2.plot(df_ace_hc.index.values, df_ace_hc.np.values, color="r", lw=1, alpha=alpha)
     axs2.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_ace.np.isnull().all():
@@ -325,8 +335,10 @@ for xx in range(1, 2):
 
     # Speed plot
     axs3 = fig.add_subplot(gs[2, 0], sharex=axs1)
-    im3 = axs3.plot(df_ace.index, df_ace.vp, "b-", lw=lw, ms=ms, label=r"$V_p$")
-    axs3.plot(df_ace_hc.index, df_ace_hc.vp, color="b", lw=1, alpha=alpha)
+    im3 = axs3.plot(
+        df_ace.index.values, df_ace.vp.values, "b-", lw=lw, ms=ms, label=r"$V_p$"
+    )
+    axs3.plot(df_ace_hc.index.values, df_ace_hc.vp.values, color="b", lw=1, alpha=alpha)
     axs3.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_ace.vp.isnull().all():
@@ -340,11 +352,15 @@ for xx in range(1, 2):
 
     # Flux plot
     axs4 = fig.add_subplot(gs[3, 0], sharex=axs1)
-    im4 = axs4.plot(df_ace.index, df_ace.flux, "g-", lw=lw, ms=ms, label=r"flux")
+    im4 = axs4.plot(
+        df_ace.index.values, df_ace.flux.values, "g-", lw=lw, ms=ms, label=r"flux"
+    )
     im4a = axs4.axhline(
         y=2.9, xmin=0, xmax=1, color="r", ls="-", lw=lw, ms=ms, label=r"cut-off"
     )
-    axs4.plot(df_ace_hc.index, df_ace_hc.flux, color="g", lw=1, alpha=alpha)
+    axs4.plot(
+        df_ace_hc.index.values, df_ace_hc.flux.values, color="g", lw=1, alpha=alpha
+    )
     axs4.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_ace.flux.isnull().all():
@@ -380,11 +396,22 @@ for xx in range(1, 2):
     )
 
     im5a = axs5.plot(
-        df_ace.index, df_ace.lambda_phi, "r-", lw=lw, ms=ms, label=r"$d\phi/dt$"
+        df_ace.index.values,
+        df_ace.lambda_phi.values,
+        "r-",
+        lw=lw,
+        ms=ms,
+        label=r"$d\phi/dt$",
     )
-    im5b = axs5.plot(df_ace.index, df_ace.lambda_wav, "b-", lw=lw, ms=ms, label=r"WAV")
-    im5c = axs5.plot(df_ace.index, df_ace.lambda_vas, "g-", lw=lw, ms=ms, label=r"Vas")
-    im5d = axs5.plot(df_ace.index, df_ace.lambda_ekl, "m-", lw=lw, ms=ms, label=r"EKL")
+    im5b = axs5.plot(
+        df_ace.index.values, df_ace.lambda_wav.values, "b-", lw=lw, ms=ms, label=r"WAV"
+    )
+    im5c = axs5.plot(
+        df_ace.index.values, df_ace.lambda_vas.values, "g-", lw=lw, ms=ms, label=r"Vas"
+    )
+    im5d = axs5.plot(
+        df_ace.index.values, df_ace.lambda_ekl.values, "m-", lw=lw, ms=ms, label=r"EKL"
+    )
     axs5.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if (
