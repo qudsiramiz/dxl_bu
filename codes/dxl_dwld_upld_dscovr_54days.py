@@ -40,7 +40,7 @@ def plot_figures_dsco_54days():
     time_now = (datetime.datetime.utcnow() - t_unix).total_seconds()
 
     # Set the start and end time (in unix time, 54 days interval)
-    time_start = time_now - (60 * 60 * 24 * 1)
+    time_start = time_now - (60 * 60 * 24 * 54)
     time_end = time_now
 
     # Change the directory to the data directory
