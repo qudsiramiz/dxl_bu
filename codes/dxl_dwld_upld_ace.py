@@ -487,7 +487,7 @@ def plot_figures_ace():
     plt.savefig(
         fig_name_git, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300
     )
-    plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
+    # plt.savefig(fig_name, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300)
     plt.savefig(
         fig_name_gdr, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300
     )
