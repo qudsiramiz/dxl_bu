@@ -476,7 +476,7 @@ for foo in range(1):
     axs5.set_ylim([60, 85])
 
     t = int(datetime.datetime.today().replace(tzinfo=datetime.timezone.utc).timestamp())
-    fig_name_hist = f"/media/cephadrius/bu_research/dxl/figures/historical/ace/1day/sw_ace_parameters_1day_{t}.png"
+    fig_name_hist = f"/mnt/cephadrius/bu_research/dxl/figures/historical/ace/1day/sw_ace_parameters_1day_{t}.png"
     plt.savefig(
         fig_name_hist, bbox_inches="tight", pad_inches=0.05, format="png", dpi=300
     )
