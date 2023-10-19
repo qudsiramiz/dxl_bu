@@ -155,11 +155,11 @@ def plot_figures_dsco():
     # Magnetic field plot
     gs = fig.add_gridspec(6, 1)
     axs1 = fig.add_subplot(gs[0, 0])
-    axs1.plot(df_dsco.index, df_dsco.bx_gsm, 'r-', lw=lw, ms=ms, label=r'$B_x$')
-    axs1.plot(df_dsco.index, df_dsco.by_gsm, 'b-', lw=lw, ms=ms, label=r'$B_y$')
-    axs1.plot(df_dsco.index, df_dsco.bz_gsm, 'g-', lw=lw, ms=ms, label=r'$B_z$')
-    axs1.plot(df_dsco.index, df_dsco.bm, 'k-.', lw=lw, ms=ms, label=r'$|\vec{B}|$')
-    axs1.plot(df_dsco.index, -df_dsco.bm, 'k-.', lw=lw, ms=ms)
+    axs1.plot(df_dsco.index.values, df_dsco.bx_gsm.values, 'r-', lw=lw, ms=ms, label=r'$B_x$')
+    axs1.plot(df_dsco.index.values, df_dsco.by_gsm.values, 'b-', lw=lw, ms=ms, label=r'$B_y$')
+    axs1.plot(df_dsco.index.values, df_dsco.bz_gsm.values, 'g-', lw=lw, ms=ms, label=r'$B_z$')
+    axs1.plot(df_dsco.index.values, df_dsco.bm.values, 'k-.', lw=lw, ms=ms, label=r'$|\vec{B}|$')
+    axs1.plot(df_dsco.index.values, -df_dsco.bm.values, 'k-.', lw=lw, ms=ms)
     axs1.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.bm.isnull().all():
@@ -174,7 +174,7 @@ def plot_figures_dsco():
 
     # Density plot
     axs2 = fig.add_subplot(gs[1, 0], sharex=axs1)
-    axs2.plot(df_dsco.index, df_dsco.np, 'r-', lw=lw, ms=ms, label=r'$n_p$')
+    axs2.plot(df_dsco.index.values, df_dsco.np.values, 'r-', lw=lw, ms=ms, label=r'$n_p$')
     axs2.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.np.isnull().all():
@@ -188,7 +188,7 @@ def plot_figures_dsco():
 
     # Speed plot
     axs3 = fig.add_subplot(gs[2, 0], sharex=axs1)
-    axs3.plot(df_dsco.index, df_dsco.vp, 'b-', lw=lw, ms=ms, label=r'$V_p$')
+    axs3.plot(df_dsco.index.values, df_dsco.vp.values, 'b-', lw=lw, ms=ms, label=r'$V_p$')
     axs3.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if df_dsco.vp.isnull().all():
@@ -202,7 +202,7 @@ def plot_figures_dsco():
 
     # Flux plot
     axs4 = fig.add_subplot(gs[3, 0], sharex=axs1)
-    axs4.plot(df_dsco.index, df_dsco.flux, 'g-', lw=lw, ms=ms, label=r'flux')
+    axs4.plot(df_dsco.index.values, df_dsco.flux.values, 'g-', lw=lw, ms=ms, label=r'flux')
     im4a = axs4.axhline(y=2.9, xmin=0, xmax=1, color='r', ls='-', lw=lw, ms=ms, label=r'cut-off')
     axs4.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
@@ -232,10 +232,10 @@ def plot_figures_dsco():
                       np.nanmax(df_dsco.lambda_ekl),
                 ])
 
-    axs5.plot(df_dsco.index, df_dsco.lambda_phi, 'r-', lw=lw, ms=ms, label=r'$d\phi/dt$')
-    axs5.plot(df_dsco.index, df_dsco.lambda_wav, 'b-', lw=lw, ms=ms, label=r'WAV')
-    axs5.plot(df_dsco.index, df_dsco.lambda_vas, 'g-', lw=lw, ms=ms, label=r'Vas')
-    axs5.plot(df_dsco.index, df_dsco.lambda_ekl, 'm-', lw=lw, ms=ms, label=r'EKL')
+    axs5.plot(df_dsco.index.values, df_dsco.lambda_phi.values, 'r-', lw=lw, ms=ms, label=r'$d\phi/dt$')
+    axs5.plot(df_dsco.index.values, df_dsco.lambda_wav.values, 'b-', lw=lw, ms=ms, label=r'WAV')
+    axs5.plot(df_dsco.index.values, df_dsco.lambda_vas.values, 'g-', lw=lw, ms=ms, label=r'Vas')
+    axs5.plot(df_dsco.index.values, df_dsco.lambda_ekl.values, 'm-', lw=lw, ms=ms, label=r'EKL')
     axs5.axvspan(t1, t2, alpha=alpha, color=bar_color)
 
     if (df_dsco.lambda_phi.isnull().all() and
@@ -299,7 +299,7 @@ def plot_figures_dsco():
     axs5.set_ylim([60, 85])
 
     t = int(datetime.datetime.today().replace(tzinfo=datetime.timezone.utc).timestamp())
-    fig_name_hist = f"/media/cephadrius/endless/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_parameters_2hr_{t}.png"
+    fig_name_hist = f"/mnt/cephadrius/bu_research/dxl/figures/historical/dscovr/2hr/sw_dsco_parameters_2hr_{t}.png"
     plt.savefig(fig_name_hist, bbox_inches='tight', pad_inches=0.05, format='png', dpi=300)
 
     #plt.tight_layout()
