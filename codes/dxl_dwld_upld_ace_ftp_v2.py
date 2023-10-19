@@ -53,6 +53,8 @@ def plot_figures_ace_ftp_v2(*args):
     swepam_files = np.sort(ftp.nlst("*_ace_swepam_1m*"))
     mag_files = np.sort(ftp.nlst("*_ace_mag_1m*"))
 
+    print(f"Number of swepam files: {len(swepam_files)}")
+    print(f"Number of mag files: {len(mag_files)}")
     # Make list of swepam and mag files
     swepam_files_list = []
     mag_files_list = []

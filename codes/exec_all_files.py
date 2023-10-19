@@ -33,8 +33,10 @@ def execute_all_files(sc):
     """
     s_exec.enter(60, 1, execute_all_files, (sc,))
 
-    print(f"Code execution started at (UTC):" +
-          f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n")
+    print(
+        f"Code execution started at (UTC):"
+        + f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n"
+    )
 
     s_ace = sched.scheduler(time.time, time.sleep)
     s_dscovr = sched.scheduler(time.time, time.sleep)
@@ -45,7 +47,7 @@ def execute_all_files(sc):
     s_dscovr7 = sched.scheduler(time.time, time.sleep)
     s_ace7 = sched.scheduler(time.time, time.sleep)
 
-    #s_ace27 = sched.scheduler(time.time, time.sleep)
+    # s_ace27 = sched.scheduler(time.time, time.sleep)
 
     try:
         s_dscovr.enter(0, 1, plot_figures_dsco)
@@ -90,10 +92,11 @@ def execute_all_files(sc):
         pass
 
     # try:
-        #s_ace27.enter(0, 1, plot_figures_ace_ftp_v2, [27])
-        #s_ace27.run()
+    # s_ace27.enter(0, 1, plot_figures_ace_ftp_v2, [27])
+    # s_ace27.run()
     # except Exception as e:
-        #print(e)
+    # print(e)
+
 
 s_exec.enter(0, 1, execute_all_files, (s_exec,))
 s_exec.run()
