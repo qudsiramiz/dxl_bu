@@ -603,7 +603,7 @@ def plot_figures_ace_ftp_v2(*args):
     plt.close("all")
     print(
         "Figure saved for ACE at (UTC):"
-        + f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n"
+        + f"{datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}\n Name of the figure: {fig_name_gdr}"
     )
 
     # print(f'It took {round(time.time() - start, 3)} seconds')
