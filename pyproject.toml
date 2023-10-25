@@ -10,6 +10,7 @@ python = ">=3.10, <3.12"
 geopack = "^1.0.10"
 pandas = "^2.1.1"
 matplotlib = "3.5.1"
+pyspedas = "^1.4.46"
 
 [tool.poetry.dev-dependencies]
 
