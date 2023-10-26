@@ -120,12 +120,12 @@ def get_sw_params(omni_level="hro", time_clip=True, trange=None, verbose=False):
     )  # in the units of 1e8 1/s * cm^2
 
     # For each column, interpolate the missing values using the previous and next values
-    # omni_df = omni_df.interpolate(method="time")
+    omni_df = omni_df.interpolate(method="time")
     return omni_df
 
 
-start_date_1day = "2014-12-01 01:30:00"
-end_date_1day = "2014-12-01 01:40:00"
+start_date_1day = "2004-11-01 00:00:00"
+end_date_1day = "2005-02-01 00:00:00"
 
 omni_df = get_sw_params(
     omni_level="hro",
@@ -135,15 +135,21 @@ omni_df = get_sw_params(
 )
 
 # Find the times when the solar wind flux is greater than 3e8 1/s * cm^2 for at least 0.5 hours
-flux_threshold = 3  # in units of 1e8 1/s * cm^2
-flux_threshold_time = 0.5  # in hours
+flux_threshold = 2.8  # in units of 1e8 1/s * cm^2
+flux_threshold_time = 30  # in minutes
+
+# Find the times when clock angle is more than 90 degrees for at least 0.5 hours
+clock_angle_threshold = 70  # in degrees
+clock_angle_threshold_time = 30  # in minutes
 
 # Create a boolean mask of the times when the flux is greater than the threshold
 omni_df["above_threshold_fx"] = omni_df["flux"] >= flux_threshold
 
 # Identify consecutive True values in the boolean mask
-consecutive_periods_fx = (omni_df["above_threshold_fx"] == False).cumsum()
-
+consecutive_periods_fx = (
+    omni_df["above_threshold_fx"] != omni_df["above_threshold_fx"].shift()
+).cumsum()
+# Find the
 # Calculate the duration of each consecutive period
 period_durations_fx = omni_df.groupby(consecutive_periods_fx)[
     "above_threshold_fx"
@@ -151,21 +157,19 @@ period_durations_fx = omni_df.groupby(consecutive_periods_fx)[
     "size"
 )  # in minutes
 
-# Filter for periods longer than 30 minutes
-long_periods_fx = period_durations_fx >= flux_threshold_time * 60  # in minutes
+# Filter for periods longer than 30 minutes and where the flux is greater than the threshold
+long_periods_fx = (period_durations_fx >= flux_threshold_time) & (
+    omni_df["flux"] >= flux_threshold
+)
 
-# Count the number of times the condition was satisfied for over 30 minutes
-count_long_periods_fx = long_periods_fx.sum()
-
-# Find the times when clock angle is more than 90 degrees for at least 0.5 hours
-clock_angle_threshold = 90  # in degrees
-clock_angle_threshold_time = 0.5  # in hours
 
 # Create a boolean mask of the times when the clock angle is greater than the threshold
 omni_df["above_threshold_ca"] = omni_df["theta_c"] >= clock_angle_threshold
 
 # Identoffy consecutive True values in the boolean mask
-consecutive_periods_ca = (omni_df["above_threshold_ca"] == False).cumsum()
+consecutive_periods_ca = (
+    omni_df["above_threshold_ca"] != omni_df["above_threshold_ca"].shift()
+).cumsum()
 
 # Calculate the duration of each consecutive period
 period_durations_ca = omni_df.groupby(consecutive_periods_ca)[
@@ -174,11 +178,27 @@ period_durations_ca = omni_df.groupby(consecutive_periods_ca)[
     "size"
 )  # in minutes
 
-# Filter for periods longer than 30 minutes
-long_periods_ca = period_durations_ca >= clock_angle_threshold_time * 60  # in minutes
-
+# Filter for periods longer than 30 minutes and where the clock angle is greater than the threshold
+long_periods_ca = (period_durations_ca >= clock_angle_threshold_time) & (
+    omni_df["theta_c"] >= clock_angle_threshold
+)
 # Count the number of times the condition was satisfied for over 30 minutes
 count_long_periods_ca = long_periods_ca.sum()
+
+
+long_periods_fx_ca = (
+    (period_durations_fx >= flux_threshold_time)
+    & (omni_df["flux"] >= flux_threshold)
+    & (period_durations_ca >= clock_angle_threshold_time)
+    & (omni_df["theta_c"] >= clock_angle_threshold)
+)
+
+long_periods_ca_fx = (
+    (period_durations_ca >= clock_angle_threshold_time)
+    & (omni_df["theta_c"] >= clock_angle_threshold)
+    & (period_durations_fx >= flux_threshold_time)
+    & (omni_df["flux"] >= flux_threshold)
+)
 
 # Plot the solar wind parameters
 fig, axs = plt.subplots(3, 2, figsize=(15, 15))
@@ -250,31 +270,15 @@ axs[1, 1].set_title("Proton Temperature")
 
 axs[1, 1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
-# Plot a horizontal bar of the length of period_durations for each period
-start_ind_ca = 0
-while start_ind_ca < len(period_durations_ca):
-    # Get the index of the next closest value where period_durations changes value
-    try:
-        next_ind_ca = np.where(
-            period_durations_ca[start_ind_ca:] != period_durations_ca[start_ind_ca]
-        )[0][0]
-    except Exception:
-        pass
-    axs[2, 0].axvspan(
-        period_durations_ca.index[start_ind_ca],
-        period_durations_ca.index[next_ind_ca - 1],
-        color="r",
-        alpha=0.2,
-    )
-    start_ind_ca = start_ind_ca + next_ind_ca
-    print(start_ind_ca)
 # On the plot, print the fraction of time the clock angle was above the threshold
+above_threshold_percent_ca = sum(omni_df.above_threshold_ca) * 100 / len(omni_df)
+for_atleast_30_min_ca = sum(long_periods_ca) * 100 / len(omni_df)
 axs[2, 0].text(
-    0.05,
-    0.95,
-    f"Above Threshold: {sum(omni_df.above_threshold_ca)/len(omni_df):.2f}",
+    0.02,
+    1.02,
+    f"Above Threshold: {above_threshold_percent_ca:.2f}%\nFor at least 30 min: {for_atleast_30_min_ca:.2f}%",
     horizontalalignment="left",
-    verticalalignment="top",
+    verticalalignment="bottom",
     transform=axs[2, 0].transAxes,
 )
 axs[2, 0].plot(
@@ -287,63 +291,54 @@ axs[2, 0].plot(
 # Make a horizontal line at the clock_angle_threshold
 axs[2, 0].axhline(
     clock_angle_threshold,
-    color="g",
+    color="r",
     linestyle="--",
     label=f"Clock Angle Threshold ({clock_angle_threshold})",
-    linewidth=2,
+    linewidth=5,
 )
 axs[2, 0].set_ylabel("Theta_c (deg)")
-axs[2, 0].legend(loc="upper right")
+# axs[2, 0].legend(loc="upper right")
 axs[2, 0].grid()
 axs[2, 0].set_title("Clock Angle")
 
 axs[2, 0].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
-axs[2, 1].plot(omni_df.index.values, omni_df["flux"].values, "bo")
+axs[2, 1].plot(omni_df.index.values, omni_df["flux"].values, "b-")
 # Make a horizontal line at the flux_threshold
 axs[2, 1].axhline(
     flux_threshold,
     color="r",
     linestyle="--",
     # label=f"Flux Threshold ({flux_threshold})",
-    linewidth=2,
+    linewidth=5,
 )
 axs[2, 1].set_ylabel("Flux ($10^8$ 1/s * cm$^2$)")
-axs[2, 1].legend(loc="upper right")
+# axs[2, 1].legend(loc="upper right")
 axs[2, 1].grid()
 axs[2, 1].set_title("Flux")
 
 axs[2, 1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
-# Plot a horizontal bar of the length of period_durations for each period
-start_ind_fx = 0
-while start_ind_fx < len(period_durations_fx):
-    # Get the index of the next closest value where period_durations chnages value
-    try:
-        next_ind_fx = np.where(
-            period_durations_fx[start_ind_fx:] != period_durations_fx[start_ind_fx]
-        )[0][0]
-        axs[2, 1].axvspan(
-            period_durations_fx.index[start_ind_fx],
-            period_durations_fx.index[next_ind_fx - 1],
-            color="r",
-            alpha=0.2,
-        )
-        start_ind_fx = start_ind_fx + next_ind_fx
-
-    except Exception:
-        break
-
 # On the plot, print the fraction of time the flux was above the threshold
+above_threshold_percent_fx = sum(omni_df.above_threshold_fx) * 100 / len(omni_df)
+for_atleast_30_min_fx = sum(long_periods_fx) * 100 / len(omni_df)
 axs[2, 1].text(
-    0.05,
-    0.95,
-    f"Above Threshold: {sum(omni_df.above_threshold_fx)/len(omni_df):.2f}",
+    0.02,
+    1.02,
+    f"Above Threshold: {above_threshold_percent_fx:.2f}%\nFor at least 30 min: {for_atleast_30_min_fx:.2f}%",
     horizontalalignment="left",
-    verticalalignment="top",
+    verticalalignment="bottom",
     transform=axs[2, 1].transAxes,
 )
 
+axs[2, 1].text(
+    1.00,
+    1.02,
+    f"Both Above Threshold: {sum(long_periods_fx_ca) * 100 / len(omni_df):.2f}%",
+    horizontalalignment="right",
+    verticalalignment="bottom",
+    transform=axs[2, 1].transAxes,
+)
 # axs[2, 1].bar(
 #     omni_df.index.values,
 #     period_durations,
