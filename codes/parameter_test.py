@@ -6,6 +6,11 @@ import pytplot as ptt
 import geopack.geopack as gp
 import datetime
 
+# Activate the latex text rendering
+plt.rc("text", usetex=True)
+plt.rc("font", family="serif")
+plt.rcParams.update({"font.size": 18})
+
 # Define a 3 months long period centered on winter solstice of 2014.
 start_date = "2014-11-01 00:00:00"
 end_date = "2015-02-01 00:00:00"
@@ -119,6 +124,9 @@ def get_sw_params(omni_level="hro", time_clip=True, trange=None, verbose=False):
         * 1e-3
     )  # in the units of 1e8 1/s * cm^2
 
+    # For each parameter, do the 30 mnute rolling mean centered on the time
+    for key in omni_df.keys():
+        omni_df[key + "_rolling"] = omni_df[key].rolling("30T", center=True).mean()
     # For each column, interpolate the missing values using the previous and next values
     omni_df = omni_df.interpolate(method="time")
     return omni_df
@@ -139,11 +147,11 @@ flux_threshold = 2.8  # in units of 1e8 1/s * cm^2
 flux_threshold_time = 30  # in minutes
 
 # Find the times when clock angle is more than 90 degrees for at least 0.5 hours
-clock_angle_threshold = 70  # in degrees
+clock_angle_threshold = 75  # in degrees
 clock_angle_threshold_time = 30  # in minutes
 
 # Create a boolean mask of the times when the flux is greater than the threshold
-omni_df["above_threshold_fx"] = omni_df["flux"] >= flux_threshold
+omni_df["above_threshold_fx"] = omni_df["flux_rolling"] >= flux_threshold
 
 # Identify consecutive True values in the boolean mask
 consecutive_periods_fx = (
@@ -159,12 +167,12 @@ period_durations_fx = omni_df.groupby(consecutive_periods_fx)[
 
 # Filter for periods longer than 30 minutes and where the flux is greater than the threshold
 long_periods_fx = (period_durations_fx >= flux_threshold_time) & (
-    omni_df["flux"] >= flux_threshold
+    omni_df["flux_rolling"] >= flux_threshold
 )
 
 
 # Create a boolean mask of the times when the clock angle is greater than the threshold
-omni_df["above_threshold_ca"] = omni_df["theta_c"] >= clock_angle_threshold
+omni_df["above_threshold_ca"] = omni_df["theta_c_rolling"] >= clock_angle_threshold
 
 # Identoffy consecutive True values in the boolean mask
 consecutive_periods_ca = (
@@ -180,172 +188,228 @@ period_durations_ca = omni_df.groupby(consecutive_periods_ca)[
 
 # Filter for periods longer than 30 minutes and where the clock angle is greater than the threshold
 long_periods_ca = (period_durations_ca >= clock_angle_threshold_time) & (
-    omni_df["theta_c"] >= clock_angle_threshold
+    omni_df["theta_c_rolling"] >= clock_angle_threshold
 )
 # Count the number of times the condition was satisfied for over 30 minutes
 count_long_periods_ca = long_periods_ca.sum()
 
 
 long_periods_fx_ca = (
-    (period_durations_fx >= flux_threshold_time)
-    & (omni_df["flux"] >= flux_threshold)
-    & (period_durations_ca >= clock_angle_threshold_time)
+    # (period_durations_fx >= flux_threshold_time)
+    (omni_df["flux"] >= flux_threshold)
+    # & (period_durations_ca >= clock_angle_threshold_time)
     & (omni_df["theta_c"] >= clock_angle_threshold)
 )
 
 long_periods_ca_fx = (
-    (period_durations_ca >= clock_angle_threshold_time)
-    & (omni_df["theta_c"] >= clock_angle_threshold)
-    & (period_durations_fx >= flux_threshold_time)
+    # (period_durations_ca >= clock_angle_threshold_time)
+    (omni_df["theta_c"] >= clock_angle_threshold)
+    # & (period_durations_fx >= flux_threshold_time)
     & (omni_df["flux"] >= flux_threshold)
 )
 
 # Plot the solar wind parameters
-fig, axs = plt.subplots(3, 2, figsize=(15, 15))
-axs[0, 0].plot(
-    omni_df.index.values, omni_df["bx_gsm"].values, color="b", label="Bx", linewidth=2
+fig, axs = plt.subplots(6, 1, figsize=(15, 16), sharex=True)
+fig.subplots_adjust(hspace=0.0, wspace=0.0)
+
+axs[0].plot(
+    omni_df.index.values,
+    omni_df["bx_gsm_rolling"].values,
+    color="b",
+    label="Bx",
+    linewidth=2,
 )
-axs[0, 0].plot(
-    omni_df.index.values, omni_df["by_gsm"].values, color="r", label="By", linewidth=2
+axs[0].plot(
+    omni_df.index.values,
+    omni_df["by_gsm_rolling"].values,
+    color="r",
+    label="By",
+    linewidth=2,
 )
-axs[0, 0].plot(
-    omni_df.index.values, omni_df["bz_gsm"].values, color="g", label="Bz", linewidth=2
+axs[0].plot(
+    omni_df.index.values,
+    omni_df["bz_gsm_rolling"].values,
+    color="g",
+    label="Bz",
+    linewidth=2,
 )
-axs[0, 0].plot(
+axs[0].plot(
     omni_df.index.values,
     np.sqrt(
-        omni_df["bx_gsm"] ** 2 + omni_df["by_gsm"] ** 2 + omni_df["bz_gsm"] ** 2
+        omni_df["bx_gsm_rolling"] ** 2
+        + omni_df["by_gsm_rolling"] ** 2
+        + omni_df["bz_gsm_rolling"] ** 2
     ).values,
     color="k",
-    label="|B|",
+    label="$|B|$",
     linewidth=2,
 )
-axs[0, 0].set_ylabel("B (nT)")
-axs[0, 0].legend(loc="upper right")
-axs[0, 0].grid()
-axs[0, 0].set_title("Magnetic Field")
+axs[0].set_ylabel("B [nT]")
+# Hide the x-axis labels and ticks
+axs[0].tick_params(axis="x", which="both", bottom=True, top=False, labelbottom=False)
+axs[0].legend(loc="upper right")
+axs[0].grid()
+# axs[0].set_title("Magnetic Field")
 
-axs[0, 0].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+axs[0].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
-axs[0, 1].plot(
-    omni_df.index.values, omni_df["np"].values, color="b", label="Np", linewidth=2
-)
-axs[0, 1].set_ylabel("Np (cm$^{-3}$)")
-axs[0, 1].legend(loc="upper right")
-axs[0, 1].grid()
-axs[0, 1].set_title("Proton Density")
-
-axs[0, 1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
-
-axs[1, 0].plot(
-    omni_df.index.values, omni_df["vx"].values, color="b", label="Vx", linewidth=2
-)
-axs[1, 0].plot(
-    omni_df.index.values, omni_df["vy"].values, color="r", label="Vy", linewidth=2
-)
-axs[1, 0].plot(
-    omni_df.index.values, omni_df["vz"].values, color="g", label="Vz", linewidth=2
-)
-axs[1, 0].plot(
+axs[1].plot(
     omni_df.index.values,
-    np.sqrt(omni_df["vx"] ** 2 + omni_df["vy"] ** 2 + omni_df["vz"] ** 2).values,
-    color="k",
-    label="|V|",
+    omni_df["vx_rolling"].values,
+    color="b",
+    label="Vx",
     linewidth=2,
 )
-axs[1, 0].set_ylabel("V (km/s)")
-axs[1, 0].legend(loc="upper right")
-axs[1, 0].grid()
-axs[1, 0].set_title("Velocity")
-
-axs[1, 0].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
-
-axs[1, 1].plot(
-    omni_df.index.values, omni_df["t_p"].values, color="b", label="Tp", linewidth=2
+axs[1].plot(
+    omni_df.index.values,
+    omni_df["vy_rolling"].values,
+    color="r",
+    label="Vy",
+    linewidth=2,
 )
-axs[1, 1].set_ylabel("Tp (K)")
-axs[1, 1].legend(loc="upper right")
-axs[1, 1].grid()
-axs[1, 1].set_title("Proton Temperature")
+axs[1].plot(
+    omni_df.index.values,
+    omni_df["vz_rolling"].values,
+    color="g",
+    label="Vz",
+    linewidth=2,
+)
+axs[1].plot(
+    omni_df.index.values,
+    np.sqrt(
+        omni_df["vx_rolling"] ** 2
+        + omni_df["vy_rolling"] ** 2
+        + omni_df["vz_rolling"] ** 2
+    ).values,
+    color="k",
+    label="$|V|$",
+    linewidth=2,
+)
+axs[1].set_ylabel("V [km/s]")
+axs[1].legend(loc="upper right")
+axs[1].grid()
+# Hide the x-axis labels
+axs[1].tick_params(axis="x", which="both", bottom=True, top=False, labelbottom=False)
+# axs[1].set_title("Velocity")
 
-axs[1, 1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+axs[1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
 # On the plot, print the fraction of time the clock angle was above the threshold
 above_threshold_percent_ca = sum(omni_df.above_threshold_ca) * 100 / len(omni_df)
 for_atleast_30_min_ca = sum(long_periods_ca) * 100 / len(omni_df)
-axs[2, 0].text(
+axs[2].text(
     0.02,
-    1.02,
+    0.95,
     f"Above Threshold: {above_threshold_percent_ca:.2f}%\nFor at least 30 min: {for_atleast_30_min_ca:.2f}%",
     horizontalalignment="left",
-    verticalalignment="bottom",
-    transform=axs[2, 0].transAxes,
+    verticalalignment="top",
+    transform=axs[2].transAxes,
+    bbox=dict(facecolor="white", alpha=0.95),
 )
-axs[2, 0].plot(
+axs[2].plot(
     omni_df.index.values,
-    omni_df["theta_c"].values,
+    omni_df["theta_c_rolling"].values,
     color="b",
-    label="Theta_c",
+    label="$\\theta_c$",
     linewidth=2,
 )
 # Make a horizontal line at the clock_angle_threshold
-axs[2, 0].axhline(
+axs[2].axhline(
     clock_angle_threshold,
     color="r",
     linestyle="--",
     label=f"Clock Angle Threshold ({clock_angle_threshold})",
     linewidth=5,
 )
-axs[2, 0].set_ylabel("Theta_c (deg)")
-# axs[2, 0].legend(loc="upper right")
-axs[2, 0].grid()
-axs[2, 0].set_title("Clock Angle")
+axs[2].set_ylabel("$\\theta_{\\rm c} = {\\rm tan}^{-1}(B_{\\rm y}/B_{\\rm z})$ [deg]")
+# axs[2].legend(loc="upper right")
+axs[2].grid()
+# Hide the x-axis labels
+axs[2].tick_params(axis="x", which="both", bottom=True, top=False, labelbottom=False)
+# axs[2].set_title("Clock Angle")
 
-axs[2, 0].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+axs[2].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
-axs[2, 1].plot(omni_df.index.values, omni_df["flux"].values, "b-")
+axs[3].plot(
+    omni_df.index.values,
+    omni_df["np_rolling"].values,
+    color="b",
+    label="Np",
+    linewidth=2,
+)
+axs[3].set_ylabel("Np [cm$^{-3}$]")
+# axs[3].legend(loc="upper right")
+axs[3].grid()
+# Hide the x-axis labels
+axs[3].tick_params(axis="x", which="both", bottom=True, top=False, labelbottom=False)
+# axs[3].set_title("Proton Density")
+axs[3].set_yscale("log")
+
+axs[3].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+
+axs[4].plot(
+    omni_df.index.values,
+    omni_df["t_p_rolling"].values,
+    color="b",
+    label="Tp",
+    linewidth=2,
+)
+axs[4].set_ylabel("$T_{\\rm p}$ [K]")
+# axs[4].legend(loc="upper right")
+axs[4].grid()
+# Hide the x-axis labels
+axs[4].tick_params(axis="x", which="both", bottom=True, top=False, labelbottom=False)
+# axs[4].set_title("Proton Temperature")
+axs[4].set_yscale("log")
+
+axs[4].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+
+
+axs[5].plot(omni_df.index.values, omni_df["flux_rolling"].values, "b-")
 # Make a horizontal line at the flux_threshold
-axs[2, 1].axhline(
+axs[5].axhline(
     flux_threshold,
     color="r",
     linestyle="--",
     # label=f"Flux Threshold ({flux_threshold})",
     linewidth=5,
 )
-axs[2, 1].set_ylabel("Flux ($10^8$ 1/s * cm$^2$)")
-# axs[2, 1].legend(loc="upper right")
-axs[2, 1].grid()
-axs[2, 1].set_title("Flux")
+axs[5].set_ylabel("Flux [$10^8$ s$^{-1}$ cm$^2$)")
+# axs[5].legend(loc="upper right")
+axs[5].grid()
+axs[5].set_xlabel("Time")
+# axs[5].set_title("Flux")
+axs[5].set_yscale("log")
 
-axs[2, 1].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
+axs[5].set_xlim([omni_df.index.values[0], omni_df.index.values[-1]])
 
 # On the plot, print the fraction of time the flux was above the threshold
 above_threshold_percent_fx = sum(omni_df.above_threshold_fx) * 100 / len(omni_df)
 for_atleast_30_min_fx = sum(long_periods_fx) * 100 / len(omni_df)
-axs[2, 1].text(
+axs[5].text(
     0.02,
-    1.02,
+    0.95,
     f"Above Threshold: {above_threshold_percent_fx:.2f}%\nFor at least 30 min: {for_atleast_30_min_fx:.2f}%",
     horizontalalignment="left",
-    verticalalignment="bottom",
-    transform=axs[2, 1].transAxes,
+    verticalalignment="top",
+    transform=axs[5].transAxes,
+    bbox=dict(facecolor="white", alpha=0.95),
 )
 
-axs[2, 1].text(
+axs[5].text(
     1.00,
-    1.02,
+    0.95,
     f"Both Above Threshold: {sum(long_periods_fx_ca) * 100 / len(omni_df):.2f}%",
     horizontalalignment="right",
-    verticalalignment="bottom",
-    transform=axs[2, 1].transAxes,
+    verticalalignment="top",
+    transform=axs[5].transAxes,
+    bbox=dict(facecolor="white", alpha=0.95),
 )
-# axs[2, 1].bar(
-#     omni_df.index.values,
-#     period_durations,
-#     width=0.01,
-#     color="r",
-#     alpha=0.2,
-# )
-plt.tight_layout()
+
+# plt.tight_layout()
 # Save the figure
-plt.savefig("../figures/omni_params.png", dpi=300, bbox_inches="tight")
+plt.savefig(
+    f"../figures/omni_params_{start_date[0:10]}_{end_date[0:10]}_rolling.png",
+    dpi=300,
+    bbox_inches="tight",
+)
